@@ -1,0 +1,36 @@
+---
+import JsonLd from "@/components/JsonLd.astro";
+import CtaBanner from "@/components/sections/CtaBanner.astro";
+import Faq from "@/components/sections/Faq.astro";
+import FeatureRows from "@/components/sections/FeatureRows.astro";
+import Hero from "@/components/sections/Hero.astro";
+import HowItWorks from "@/components/sections/HowItWorks.astro";
+import Integrations from "@/components/sections/Integrations.astro";
+import LogoStrip from "@/components/sections/LogoStrip.astro";
+import Product from "@/components/sections/Product.astro";
+import Stats from "@/components/sections/Stats.astro";
+import Testimonial from "@/components/sections/Testimonial.astro";
+import { homePage } from "@/config/pages/home";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+
+// The home FAQ answers are visible on the page, so FAQPage data is allowed here.
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: homePage.faq.items.map((i) => ({ "@type": "Question", name: i.question, acceptedAnswer: { "@type": "Answer", text: i.answer } })),
+};
+---
+
+<BaseLayout title={homePage.meta.title} description={homePage.meta.description}>
+  <JsonLd slot="head" data={faqJsonLd} />
+  <Hero content={homePage.hero} />
+  <LogoStrip content={homePage.logos} />
+  <Product content={homePage.product} />
+  <Stats content={homePage.stats} />
+  <HowItWorks content={homePage.howItWorks} />
+  <Testimonial content={homePage.testimonial} />
+  <FeatureRows content={homePage.features} />
+  <CtaBanner content={homePage.cta} mobileSplit />
+  <Integrations content={homePage.integrations} />
+  <Faq content={homePage.faq} />
+</BaseLayout>
