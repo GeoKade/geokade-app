@@ -9,11 +9,12 @@ import NewsletterForm from "./NewsletterForm.astro";
 
 const locale = resolveLocale(Astro.currentLocale);
 const siteConfig = getSiteConfig(locale);
-const { footer, socials, brand } = siteConfig;
+const { footer, socials, brand, features } = siteConfig;
 // Optional: delete `credit` in siteConfig.footer to remove the line.
 const credit = (footer as { credit?: FooterCredit }).credit;
 const [explore, company] = footer.columns;
 const [privacy, terms] = footer.legal;
+const showNewsletter = features.newsletter;
 
 const linkClass =
   "inline-flex items-center text-sm leading-5 [overflow-wrap:anywhere] text-ink underline-offset-4 transition-colors hover:text-brand-strong hover:underline";
@@ -43,10 +44,10 @@ const columns = [
 
   <div data-reveal data-y="40" class="@container relative mx-auto max-w-site overflow-hidden bg-surface p-3">
     <div class="relative z-10 grid grid-cols-2 border border-line px-3 md:grid-cols-3 md:border-0 md:px-0 xl:grid-cols-[452fr_223fr_222fr_319fr] xl:grid-rows-[308px_auto]">
-      <!-- Tagline + newsletter -->
-      <div class="col-span-2 flex flex-col gap-8 pt-10 pb-8 md:col-span-3 md:gap-14 md:border md:border-line md:p-8 xl:col-span-1 xl:border-r-0 xl:pt-[31px] xl:pl-[37px]">
+      <!-- Tagline + newsletter (newsletter gated by siteConfig.features.newsletter) -->
+      <div class:list={["col-span-2 flex flex-col pt-10 pb-8 md:col-span-3 md:border md:border-line md:p-8 xl:col-span-1 xl:border-r-0 xl:pt-[31px] xl:pl-[37px]", showNewsletter ? "gap-8 md:gap-14" : "gap-0"]}>
         <p class="max-w-[307px] font-heading-flex text-h3 font-semibold text-ink">{footer.tagline}</p>
-        <NewsletterForm {...footer.newsletter} />
+        {showNewsletter && <NewsletterForm {...footer.newsletter} />}
       </div>
 
       {

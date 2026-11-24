@@ -2,7 +2,7 @@
 export const faqPage = {
   meta: {
     title: "FAQ",
-    description: "Answers about GeoKade Cloud, Enterprise, Intelligence, and how geokade.com relates to geokade.nl.",
+    description: "Answers about GeoKade Cloud, Enterprise, Intelligence, and how geokade.nl relates to geokade.nl.",
   },
   hero: {
     eyebrow: "FAQ",
@@ -21,14 +21,14 @@ export const faqPage = {
             "GeoKade is a geospatial intelligence company. We help organisations discover, map, analyze, and understand location-based information — from Dutch open data to enterprise datasets.",
         },
         {
-          question: "What is the difference between geokade.com and geokade.nl?",
+          question: "What is the difference between geokade.nl and geokade.nl?",
           answer:
-            "geokade.com is the corporate and commercial website. geokade.nl is the product platform (GeoKade Cloud) where you work with data and maps.",
+            "geokade.nl is the corporate and commercial website. geokade.nl is the product platform (GeoKade Cloud) where you work with data and maps.",
         },
         {
           question: "Who is GeoKade for?",
           answer:
-            "Primarily municipalities, provinces, infrastructure and utility organisations, planning and engineering firms, and enterprises that need spatial intelligence with governance.",
+            "Municipalities, provinces, and agencies — and equally organisations, universities, research institutes, NGOs, infrastructure and utility teams, planning and engineering firms, and private enterprises that need spatial intelligence with governance.",
         },
         {
           question: "Do I need to be a GIS specialist?",
@@ -44,12 +44,12 @@ export const faqPage = {
         {
           question: "What is GeoKade Cloud?",
           answer:
-            "A hosted geospatial intelligence environment for discovery, interactive maps, collaboration, and related workflows — without running your own GIS infrastructure.",
+            "A hosted geospatial intelligence environment for discovery, interactive maps, collaboration, and related workflows — suited to municipalities, organisations, universities, and teams that do not want to run their own GIS infrastructure.",
         },
         {
           question: "What is GeoKade Enterprise?",
           answer:
-            "A deployable option for organisations that need private deployment, IAM, data residency, governance, and integration with existing systems.",
+            "A deployable option for public and private organisations that need private deployment, IAM, data residency, governance, and integration with existing systems — including private-sector buyers with stricter control requirements.",
         },
         {
           question: "What is GeoKade Intelligence?",
@@ -80,7 +80,7 @@ export const faqPage = {
         {
           question: "How do I evaluate Enterprise?",
           answer:
-            "Use the contact form or email hello@geokade.com. We can discuss deployment, identity, and integration requirements without inventing compliance claims.",
+            "Use the contact form or email hello@geokade.nl. We can discuss deployment, identity, and integration requirements without inventing compliance claims.",
         },
       ],
     },

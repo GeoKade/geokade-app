@@ -13,7 +13,7 @@ const site =
   process.env.SITE_URL ??
   (process.env.VERCEL_PROJECT_PRODUCTION_URL
     ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
-    : "https://geokade.com");
+    : "https://geokade.nl");
 
 // https://astro.build/config
 export default defineConfig({

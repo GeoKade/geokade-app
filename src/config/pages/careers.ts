@@ -15,7 +15,7 @@ export const careersPage = {
     title: "Build geospatial",
     accent: "intelligence.",
     description:
-      "A focused team shipping Cloud, Enterprise paths, and spatial intelligence — with customers in government and infrastructure.",
+      "A focused team shipping Cloud, Enterprise paths, and spatial intelligence — with customers across government, organisations, universities, and private enterprise.",
   },
   values: [
     {
@@ -42,7 +42,8 @@ export const careersPage = {
       eyebrow: "03 — Contact",
       title: "Stay close to",
       accent: "the territory",
-      description: "Talk to municipalities, utilities, and GIS teams regularly. Spatial products are won in the field.",
+      description:
+        "Talk to municipalities, universities, organisations, utilities, and private GIS teams regularly. Spatial products are won in the field.",
       visual: homePage.features[2].visual,
     },
   ],

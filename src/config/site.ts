@@ -23,7 +23,7 @@ export type SocialLink = {
 const year = new Date().getFullYear();
 const name = "GeoKade";
 const legalName = "GeoKade B.V.";
-const email = "hello@geokade.com";
+const email = "hello@geokade.nl";
 const platformUrl = "https://geokade.nl";
 
 const descriptions: Record<Locale, string> = {
@@ -216,12 +216,20 @@ export function getSiteConfig(locale: Locale = defaultLocale) {
     email,
     platformUrl,
     /** Public URL – set `site` in astro.config.mjs (or the SITE_URL env var). */
-    url: (import.meta.env.SITE ?? "https://geokade.com").replace(/\/$/, ""),
+    url: (import.meta.env.SITE ?? "https://geokade.nl").replace(/\/$/, ""),
     brand: { mark: "/brand/mark.svg", markAlt: "/brand/mark-alt.svg" },
+    /**
+     * Temporary UI switches — keep components in the codebase; flip to `true` to show again.
+     * Newsletter + contact form are off until SMTP / a provider is connected.
+     */
+    features: {
+      newsletter: false,
+      contactForm: false,
+    },
     socials: [
-      { platform: "linkedin" as const, label: "LinkedIn", href: "https://www.linkedin.com/company/geokade" },
-      { platform: "x" as const, label: "X (Twitter)", href: "https://x.com/geokade" },
-      { platform: "youtube" as const, label: "YouTube", href: "https://www.youtube.com/@geokade" },
+      { platform: "linkedin" as const, label: "LinkedIn", href: "https://www.linkedin.nl/company/geokade" },
+      { platform: "x" as const, label: "X (Twitter)", href: "https://x.nl/geokade" },
+      { platform: "youtube" as const, label: "YouTube", href: "https://www.youtube.nl/@geokade" },
     ] satisfies SocialLink[],
     ...local,
   };

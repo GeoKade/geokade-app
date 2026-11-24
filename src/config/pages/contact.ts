@@ -5,7 +5,7 @@ import { defaultLocale, localePath, type Locale } from "@/i18n";
 function buildContact(locale: Locale) {
   const p = (path: string) => localePath(locale, path);
   const nl = locale === "nl";
-  const email = "hello@geokade.com";
+  const email = "hello@geokade.nl";
 
   return {
     meta: {
@@ -39,7 +39,7 @@ function buildContact(locale: Locale) {
           : "Private deployment, IAM, integrations, and governance.",
         link: {
           label: nl ? "Plan een gesprek" : "Book a conversation",
-          href: `mailto:sales@geokade.com?subject=Enterprise`,
+          href: `mailto:sales@geokade.nl?subject=Enterprise`,
         },
       },
       {
@@ -48,7 +48,7 @@ function buildContact(locale: Locale) {
         description: nl
           ? "Integraties, reseller- of datapartnerships."
           : "Integrations, reseller, or data partnerships.",
-        link: { label: "partners@geokade.com", href: "mailto:partners@geokade.com" },
+        link: { label: "partners@geokade.nl", href: "mailto:partners@geokade.nl" },
       },
       {
         icon: "mic" as LineIconName,
@@ -56,16 +56,16 @@ function buildContact(locale: Locale) {
         description: nl
           ? "Interviewaanvragen, merkassets en productcontext."
           : "Interview requests, brand assets, and product context.",
-        link: { label: "press@geokade.com", href: "mailto:press@geokade.com" },
+        link: { label: "press@geokade.nl", href: "mailto:press@geokade.nl" },
       },
     ],
     docs: {
-      eyebrow: nl ? "Sneller dan een formulier" : "Faster than a form",
+      eyebrow: nl ? "Direct contact" : "Direct contact",
       title: nl ? "Begin met het" : "Start with the",
       accent: nl ? "platform." : "platform.",
       description: nl
-        ? "Veel antwoorden vind je door GeoKade Cloud te verkennen. Voor Enterprise en maatwerk: stuur een bericht."
-        : "Many answers start by exploring GeoKade Cloud. For Enterprise and custom needs: send a message.",
+        ? "Veel antwoorden vind je door GeoKade Cloud te verkennen. Voor Enterprise en maatwerk: mail ons via de kanalen hierboven."
+        : "Many answers start by exploring GeoKade Cloud. For Enterprise and custom needs: email us via the channels above.",
       office: {
         flag: "🇳🇱",
         place: nl ? "Nederland · Europa" : "Netherlands · Europe",
@@ -94,7 +94,7 @@ function buildContact(locale: Locale) {
         },
         company: {
           label: nl ? "Organisatie" : "Company",
-          placeholder: nl ? "Gemeente / bedrijf" : "Your organisation",
+          placeholder: nl ? "Gemeente / universiteit / organisatie" : "Municipality / university / organisation",
         },
         topic: {
           label: nl ? "Onderwerp" : "Topic",
@@ -124,21 +124,21 @@ function buildContact(locale: Locale) {
         {
           label: nl ? "Nederland" : "Netherlands",
           city: nl ? "Nederland" : "Netherlands",
-          image: "/images/contact/san-francisco.webp",
-          alt: nl ? "Nederland als thuisbasis" : "Netherlands as home base",
+          image: "/images/contact/amsterdam.webp",
+          alt: nl ? "Kaart van Amsterdam Centrum" : "Map of Amsterdam city centre",
           rows: [
-            { icon: "globe" as LineIconName, text: "geokade.com · geokade.nl" },
+            { icon: "globe" as LineIconName, text: "geokade.nl · geokade.nl" },
             { icon: "clock" as LineIconName, text: nl ? "CET / CEST" : "CET / CEST" },
           ],
         },
         {
           label: "Europe",
           city: "Europe",
-          image: "/images/contact/lisbon.webp",
-          alt: nl ? "Europese marktfocus" : "European market focus",
+          image: "/images/contact/barcelona.webp",
+          alt: nl ? "Kaart van Barcelona — Europese marktfocus" : "Map of Barcelona — European market focus",
           rows: [
-            { icon: "building" as LineIconName, text: nl ? "Overheid & infra" : "Public sector & infra" },
-            { icon: "users" as LineIconName, text: nl ? "Enterprise kopers" : "Enterprise buyers" },
+            { icon: "building" as LineIconName, text: nl ? "Overheid, onderwijs & organisaties" : "Public sector, campus & organisations" },
+            { icon: "users" as LineIconName, text: nl ? "Private & enterprise kopers" : "Private & enterprise buyers" },
           ],
         },
         {

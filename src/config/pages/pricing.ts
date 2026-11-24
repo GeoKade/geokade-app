@@ -100,12 +100,14 @@ export const pricingPage = {
     {
       icon: "users" as LineIconName,
       title: "Built for organisations",
-      description: "Municipal, infrastructure, and enterprise buyers — not consumer map toys.",
+      description:
+        "Municipalities, universities, research and civic organisations, infrastructure teams, and private enterprise — not consumer map toys.",
     },
     {
       icon: "shieldLock" as LineIconName,
       title: "Control when you need it",
-      description: "Enterprise conversations start from governance, identity, and data residency — not marketing slides.",
+      description:
+        "Enterprise conversations — public or private sector — start from governance, identity, and data residency — not marketing slides.",
     },
   ],
   track: {
@@ -140,8 +142,9 @@ export const pricingPage = {
           "Possible commercial models include usage-based AI and advanced analysis. Exact metering is confirmed in a proposal — we do not invent live meters here.",
       },
       {
-        question: "Do you offer public-sector procurement support?",
-        answer: "We can support evaluation conversations for municipalities and agencies. Reach out via the contact form.",
+        question: "Do you offer public-sector and campus procurement support?",
+        answer:
+          "Yes. We support evaluation conversations for municipalities, agencies, universities, and other organisations — and Enterprise discussions for private-sector buyers. Reach out via the contact form.",
       },
       {
         question: "Where is the product?",

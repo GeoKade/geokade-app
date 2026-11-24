@@ -112,10 +112,10 @@ function buildHome(locale: Locale) {
         : "Built for organisations that take location seriously",
       items: [
         { name: "Municipality", shape: "circle" },
-        { name: "Province", shape: "square" },
-        { name: "Utility", shape: "triangle" },
-        { name: "Energy", shape: "spark" },
-        { name: "Planning", shape: "ring" },
+        { name: "University", shape: "square" },
+        { name: "NGO", shape: "triangle" },
+        { name: "Utility", shape: "spark" },
+        { name: "Research", shape: "ring" },
         { name: "Infra", shape: "circle" },
         { name: "Enterprise", shape: "diamond" },
       ] as const,
@@ -209,13 +209,17 @@ function buildHome(locale: Locale) {
       items: [
         {
           icon: "building" as LineIconName,
-          value: nl ? "Overheid" : "Public",
-          label: nl ? "Gemeenten, provincies en agentschappen." : "Municipalities, provinces, and agencies.",
+          value: nl ? "Publiek" : "Public",
+          label: nl
+            ? "Gemeenten, provincies, agentschappen én organisaties."
+            : "Municipalities, agencies, and public organisations.",
         },
         {
-          icon: "globe" as LineIconName,
-          value: "NL → EU",
-          label: nl ? "Start in Nederland, ontworpen voor Europa." : "Netherlands first, designed for Europe.",
+          icon: "users" as LineIconName,
+          value: nl ? "Onderwijs" : "Campus",
+          label: nl
+            ? "Universiteiten, hogescholen en onderzoeksinstituten."
+            : "Universities, colleges, and research institutes.",
         },
         {
           icon: "sparkle" as LineIconName,
@@ -225,7 +229,9 @@ function buildHome(locale: Locale) {
         {
           icon: "bank" as LineIconName,
           value: nl ? "Enterprise" : "Enterprise",
-          label: nl ? "Cloud of private deployment met governance." : "Cloud or private deployment with governance.",
+          label: nl
+            ? "Ook private sector: governance en private deployment."
+            : "Private sector too: governance and private deployment.",
         },
       ],
     },
@@ -314,8 +320,8 @@ function buildHome(locale: Locale) {
         title: nl ? "GeoKade Cloud" : "GeoKade Cloud",
         accent: nl ? "— hosted geospatial intelligence." : "— hosted geospatial intelligence.",
         description: nl
-          ? "Een hosted platform om datasets te ontdekken, kaarten te bouwen en samen te werken — zonder eigen GIS-infrastructuur te beheren."
-          : "A hosted platform to discover datasets, build maps, and collaborate — without running your own GIS infrastructure.",
+          ? "Een hosted platform voor gemeenten, organisaties, universiteiten en teams die datasets willen ontdekken, kaarten bouwen en samenwerken — zonder eigen GIS-infrastructuur te beheren."
+          : "A hosted platform for municipalities, organisations, universities, and teams that need to discover datasets, build maps, and collaborate — without running their own GIS infrastructure.",
         visual: {
           type: "launch" as const,
           checklistTitle: nl ? "Cloud capabilities" : "Cloud capabilities",
@@ -341,8 +347,8 @@ function buildHome(locale: Locale) {
         title: nl ? "GeoKade Enterprise" : "GeoKade Enterprise",
         accent: nl ? "— controle, governance, schaal." : "— control, governance, scale.",
         description: nl
-          ? "Voor organisaties die private deployment, IAM, datasoevereiniteit en integratie met bestaande GIS-systemen nodig hebben."
-          : "For organisations that need private deployment, IAM, data residency, and integration with existing GIS systems.",
+          ? "Voor publieke én private organisaties die private deployment, IAM, datasoevereiniteit en integratie met bestaande GIS-systemen nodig hebben — van overheid tot enterprise."
+          : "For public and private organisations that need private deployment, IAM, data residency, and integration with existing GIS systems — from government to enterprise.",
         visual: {
           type: "grow" as const,
           funnel: [
@@ -436,10 +442,16 @@ function buildHome(locale: Locale) {
       cta: { label: nl ? "Contact" : "Contact us", href: p("contact") },
       items: [
         {
-          question: nl ? "Wat is het verschil tussen geokade.com en geokade.nl?" : "What is the difference between geokade.com and geokade.nl?",
+          question: nl ? "Wat is het verschil tussen geokade.nl en geokade.nl?" : "What is the difference between geokade.nl and geokade.nl?",
           answer: nl
-            ? "geokade.com is de bedrijfssite. geokade.nl is het productplatform (GeoKade Cloud) waar je met data en kaarten werkt."
-            : "geokade.com is the corporate site. geokade.nl is the product platform (GeoKade Cloud) where you work with data and maps.",
+            ? "geokade.nl is de bedrijfssite. geokade.nl is het productplatform (GeoKade Cloud) waar je met data en kaarten werkt."
+            : "geokade.nl is the corporate site. geokade.nl is the product platform (GeoKade Cloud) where you work with data and maps.",
+        },
+        {
+          question: nl ? "Voor wie is GeoKade?" : "Who is GeoKade for?",
+          answer: nl
+            ? "Voor gemeenten en overheden, maar ook voor organisaties, universiteiten, onderzoeksinstituten en private enterprises die ruimtelijke data serieus gebruiken."
+            : "For municipalities and government, and equally for organisations, universities, research institutes, and private enterprises that take spatial data seriously.",
         },
         {
           question: nl ? "Is GeoKade alleen voor Nederland?" : "Is GeoKade only for the Netherlands?",
@@ -462,8 +474,8 @@ function buildHome(locale: Locale) {
         {
           question: nl ? "Hoe neem ik contact op voor Enterprise?" : "How do I contact you about Enterprise?",
           answer: nl
-            ? "Gebruik het contactformulier of mail hello@geokade.com. We plannen graag een gesprek over deployment en integratie."
-            : "Use the contact form or email hello@geokade.com. We are happy to schedule a conversation about deployment and integration.",
+            ? "Gebruik het contactformulier of mail hello@geokade.nl. We plannen graag een gesprek over deployment en integratie."
+            : "Use the contact form or email hello@geokade.nl. We are happy to schedule a conversation about deployment and integration.",
         },
       ],
     },

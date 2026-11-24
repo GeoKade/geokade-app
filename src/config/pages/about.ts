@@ -44,8 +44,8 @@ function buildAbout(locale: Locale) {
         icon: "building" as LineIconName,
         title: nl ? "Serieus Europees B2B" : "Serious European B2B",
         description: nl
-          ? "We bouwen voor gemeenten, infrastructuur en enterprise — met heldere claims, geen hype."
-          : "We build for municipalities, infrastructure, and enterprise — with clear claims, not hype.",
+          ? "We bouwen voor gemeenten, organisaties, universiteiten én private enterprise — met heldere claims, geen hype."
+          : "We build for municipalities, organisations, universities, and private enterprise — with clear claims, not hype.",
       },
     ],
     story: {
@@ -91,7 +91,9 @@ function buildAbout(locale: Locale) {
         {
           icon: "building" as LineIconName,
           value: "B2B",
-          label: nl ? "Overheid, infra, enterprise" : "Public sector, infra, enterprise",
+          label: nl
+            ? "Overheid, organisaties, universiteiten, private sector"
+            : "Public sector, organisations, universities, private sector",
         },
         {
           icon: "sparkle" as LineIconName,
@@ -110,10 +112,10 @@ function buildAbout(locale: Locale) {
       title: nl ? "Een Europees geospatial" : "A European geospatial",
       accent: nl ? "technology team" : "technology team",
       members: [
-        { name: "GeoKade", role: nl ? "Product & platform" : "Product & platform", image: "/images/about/team-1.webp" },
-        { name: "Cloud", role: nl ? "geokade.nl" : "geokade.nl", image: "/images/about/team-2.webp" },
-        { name: "Enterprise", role: nl ? "Deployment & governance" : "Deployment & governance", image: "/images/about/team-3.webp" },
-        { name: "Intelligence", role: nl ? "Spatial AI roadmap" : "Spatial AI roadmap", image: "/images/about/team-4.webp" },
+        { name: "Lukas", role: nl ? "Product & platform" : "Product & platform", avatar: "layers" as const },
+        { name: "Monika", role: nl ? "Design & experience" : "Design & experience", avatar: "pin" as const },
+        { name: "Ruben", role: nl ? "Spatial intelligence" : "Spatial intelligence", avatar: "grid" as const },
+        { name: "Thomas", role: nl ? "Engineering" : "Engineering", avatar: "orbit" as const },
       ],
     },
     cta: {
