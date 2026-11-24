@@ -2,16 +2,62 @@
 interface Props {
   side: "left" | "right";
 }
-/** Faint squares in the top corners of a hero (decorative). 182px on desktop, 72px on phones (as in Figma). */
+
+/**
+ * Decorative geo corner mark: contour lines + map grid + faint layer diamond.
+ * Same silhouette role as the old Vaxnori pixel squares — supports the brand,
+ * does not compete with the headline.
+ */
 const { side } = Astro.props;
-const squares = [
-  [0, 0], [0, 66], [66, 0], [58, 58], [70, 122], [122, 70], [130, 6], [6, 130],
-];
+const mirror = side === "right";
 ---
 
 <div
   aria-hidden="true"
-  class={`pointer-events-none absolute top-12 size-[182px] scale-[0.396] lg:top-[74px] lg:scale-100 ${side === "left" ? "left-0 origin-top-left" : "right-0 origin-top-right"}`}
+  class:list={[
+    "pointer-events-none absolute top-10 w-[148px] opacity-[0.55] lg:top-[58px] lg:w-[200px]",
+    side === "left" ? "left-0 origin-top-left" : "right-0 origin-top-right",
+  ]}
 >
-  {squares.map(([x, y]) => <span class="absolute size-[52px] bg-[linear-gradient(132.87deg,#fafafa_4.01%,#fff_100%)]" style={`${side}: ${x}px; top: ${y}px`} />)}
+  <svg viewBox="0 0 200 200" class="h-auto w-full text-ink" fill="none">
+    <g transform={mirror ? "translate(200 0) scale(-1 1)" : undefined}>
+      <!-- Geographic grid -->
+      <g stroke="currentColor" stroke-width="0.75" opacity="0.18">
+        <path d="M12 28h120M12 52h136M12 76h148M12 100h136M12 124h120M12 148h96" />
+        <path d="M28 12v148M52 12v148M76 12v136M100 12v120M124 20v100M148 36v72" />
+      </g>
+
+      <!-- Contour / topographic curves -->
+      <g stroke="currentColor" stroke-width="1.25" stroke-linecap="round" opacity="0.28">
+        <path d="M18 168c22-18 38-42 46-70 8-28 22-48 48-62" />
+        <path d="M30 168c20-16 34-38 42-64 8-26 20-44 42-56" />
+        <path d="M44 168c18-14 30-34 36-58 8-24 18-40 36-50" />
+        <path d="M58 168c14-12 24-30 30-52 6-20 14-34 28-42" />
+      </g>
+
+      <!-- Meridian tick marks -->
+      <g stroke="currentColor" stroke-width="1" opacity="0.35">
+        <path d="M28 12v6M52 12v6M76 12v6M100 12v6" />
+        <path d="M12 28h6M12 52h6M12 76h6M12 100h6" />
+      </g>
+
+      <!-- Mini layer stack (echo of the logo) -->
+      <g transform="translate(118 132) scale(1.35)" opacity="0.9">
+        <path d="M16 3.5 27 10.2 16 16.9 5 10.2 16 3.5Z" fill="var(--layer-1)" opacity="0.85" />
+        <path d="M16 9.5 27 16.2 16 22.9 5 16.2 16 9.5Z" fill="var(--layer-2)" opacity="0.9" />
+        <path d="M16 15.5 27 22.2 16 28.9 5 22.2 16 15.5Z" fill="var(--layer-3)" />
+      </g>
+    </g>
+
+    <!-- Coordinate readout (not mirrored) -->
+    <text
+      x={mirror ? 186 : 14}
+      y="188"
+      text-anchor={mirror ? "end" : "start"}
+      class="fill-current font-sans"
+      style="font-size: 9px; letter-spacing: 0.06em; opacity: 0.35"
+    >
+      {mirror ? "4.89°E" : "52.37°N"}
+    </text>
+  </svg>
 </div>

@@ -44,42 +44,48 @@ const { label, placeholder, button, success } = Astro.props;
     console.info("[newsletter] TODO: send to your provider:", email);
   }
 
-  document.querySelectorAll<HTMLFormElement>("[data-newsletter]").forEach((form) => {
-    const input = form.querySelector<HTMLInputElement>("input")!;
-    const field = form.querySelector<HTMLElement>("[data-field]")!;
-    const status = form.querySelector<HTMLElement>("[aria-live]")!;
-    const submit = form.querySelector<HTMLButtonElement>("button[type=submit]")!;
+  function bindNewsletters() {
+    document.querySelectorAll<HTMLFormElement>("[data-newsletter]").forEach((form) => {
+      if (form.dataset.bound === "1") return;
+      form.dataset.bound = "1";
+      const input = form.querySelector<HTMLInputElement>("input")!;
+      const field = form.querySelector<HTMLElement>("[data-field]")!;
+      const status = form.querySelector<HTMLElement>("[aria-live]")!;
+      const submit = form.querySelector<HTMLButtonElement>("button[type=submit]")!;
 
-    const setError = (message?: string) => {
-      field.toggleAttribute("data-error", Boolean(message));
-      status.toggleAttribute("data-error", Boolean(message));
-      if (message) input.setAttribute("aria-invalid", "true");
-      else input.removeAttribute("aria-invalid");
-      status.textContent = message ?? "";
-    };
+      const setError = (message?: string) => {
+        field.toggleAttribute("data-error", Boolean(message));
+        status.toggleAttribute("data-error", Boolean(message));
+        if (message) input.setAttribute("aria-invalid", "true");
+        else input.removeAttribute("aria-invalid");
+        status.textContent = message ?? "";
+      };
 
-    input.addEventListener("input", () => field.hasAttribute("data-error") && setError());
+      input.addEventListener("input", () => field.hasAttribute("data-error") && setError());
 
-    form.addEventListener("submit", async (event) => {
-      event.preventDefault();
-      if (!input.value || !input.validity.valid) {
-        setError("Please enter a valid email address.");
-        input.focus();
-        return;
-      }
-      setError();
-      submit.disabled = true;
-      submit.textContent = "Sending…";
-      try {
-        await subscribe(input.value.trim());
-        status.textContent = form.dataset.success ?? "";
-        form.reset();
-      } catch {
-        setError("Something went wrong. Please try again.");
-      } finally {
-        submit.disabled = false;
-        submit.textContent = submit.dataset.label ?? "";
-      }
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        if (!input.value || !input.validity.valid) {
+          setError("Please enter a valid email address.");
+          input.focus();
+          return;
+        }
+        setError();
+        submit.disabled = true;
+        submit.textContent = "Sending…";
+        try {
+          await subscribe(input.value.trim());
+          status.textContent = form.dataset.success ?? "";
+          form.reset();
+        } catch {
+          setError("Something went wrong. Please try again.");
+        } finally {
+          submit.disabled = false;
+          submit.textContent = submit.dataset.label ?? "";
+        }
+      });
     });
-  });
+  }
+
+  document.addEventListener("astro:page-load", bindNewsletters);
 </script>

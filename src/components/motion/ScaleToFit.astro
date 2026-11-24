@@ -24,7 +24,7 @@ const { width, height, class: className } = Astro.props;
     <slot />
   </div>
 </div>
-<script is:inline>
+<script data-astro-rerun is:inline>
   // Set the scale before first paint (the shared script keeps it updated on resize).
   (function (el) {
     el.style.setProperty("--fit", String(Math.min(1, el.clientWidth / Number(el.dataset.fit))));

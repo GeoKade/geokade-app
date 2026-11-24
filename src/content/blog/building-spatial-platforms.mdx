@@ -1,0 +1,25 @@
+---
+title: "Engineering notes: building a geospatial platform people trust"
+shortTitle: "Engineering notes"
+accent: "building a geospatial platform people trust"
+excerpt: "Coordinate systems, tile performance, provenance, and permission models — the unglamorous work behind a trustworthy map product."
+category: "Engineering"
+date: "2026-07-18"
+readingTime: "7 min read"
+image: "../../assets/images/blog/recurring-ops.webp"
+imageAlt: "Engineering diagram of map tiles, catalogs, and access control"
+author:
+  name: "GeoKade Team"
+  avatar: "../../assets/images/blog/author-james.webp"
+---
+
+Spatial products fail quietly when they get CRS wrong, when tiles lag, or when users cannot tell where a layer came from. Trust is an engineering property.
+
+## Foundations we obsess over
+
+1. **Provenance** — every layer should show source, update rhythm, and license context where relevant
+2. **Performance** — interactive maps have to feel immediate on municipal hardware, not only on a developer laptop
+3. **Permissions** — public open data and private enterprise layers must coexist without leaking scope
+4. **Interoperability** — sit beside existing GIS stacks; do not force a rip-and-replace
+
+These topics rarely appear in marketing pages. They decide whether a pilot becomes a platform.

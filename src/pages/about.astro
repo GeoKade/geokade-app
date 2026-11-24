@@ -5,8 +5,11 @@ import Principles from "@/components/sections/Principles.astro";
 import Stats from "@/components/sections/Stats.astro";
 import StorySection from "@/components/sections/StorySection.astro";
 import TeamSection from "@/components/sections/TeamSection.astro";
-import { aboutPage } from "@/config/pages/about";
+import { getAboutPage } from "@/config/pages/about";
+import { resolveLocale } from "@/i18n";
 import BaseLayout from "@/layouts/BaseLayout.astro";
+
+const aboutPage = getAboutPage(resolveLocale(Astro.currentLocale));
 ---
 
 <BaseLayout {...aboutPage.meta}>

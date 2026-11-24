@@ -10,14 +10,20 @@ import LogoStrip from "@/components/sections/LogoStrip.astro";
 import Product from "@/components/sections/Product.astro";
 import Stats from "@/components/sections/Stats.astro";
 import Testimonial from "@/components/sections/Testimonial.astro";
-import { homePage } from "@/config/pages/home";
+import { getHomePage } from "@/config/pages/home";
+import { resolveLocale } from "@/i18n";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 
-// The home FAQ answers are visible on the page, so FAQPage data is allowed here.
+const homePage = getHomePage(resolveLocale(Astro.currentLocale));
+
 const faqJsonLd = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
-  mainEntity: homePage.faq.items.map((i) => ({ "@type": "Question", name: i.question, acceptedAnswer: { "@type": "Answer", text: i.answer } })),
+  mainEntity: homePage.faq.items.map((i) => ({
+    "@type": "Question",
+    name: i.question,
+    acceptedAnswer: { "@type": "Answer", text: i.answer },
+  })),
 };
 ---
 

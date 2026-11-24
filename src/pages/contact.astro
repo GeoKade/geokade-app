@@ -5,10 +5,12 @@ import LineIcon from "@/components/icons/LineIcon.astro";
 import PageHero from "@/components/sections/PageHero.astro";
 import Container from "@/components/ui/Container.astro";
 import SectionHeading from "@/components/ui/SectionHeading.astro";
-import { contactPage } from "@/config/pages/contact";
+import { getContactPage } from "@/config/pages/contact";
+import { resolveLocale } from "@/i18n";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { getImage } from "@/lib/images";
 
+const contactPage = getContactPage(resolveLocale(Astro.currentLocale));
 const { channels, docs, form, locations } = contactPage;
 ---
 

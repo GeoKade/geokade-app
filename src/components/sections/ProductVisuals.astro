@@ -1,15 +1,13 @@
 ---
-import { Image } from "astro:assets";
 import Icon from "@/components/icons/Icon.astro";
 import LineIcon from "@/components/icons/LineIcon.astro";
 import type { HomePage } from "@/config/pages/home";
-import { getImage } from "@/lib/images";
 import { cn } from "@/lib/utils";
 
 interface Props {
   visual: HomePage["product"]["tabs"][number]["visual"];
 }
-/** The visual on the right of a product tab: an image, an animated workflow, or the company map ("canvas"). */
+/** The visual on the right of a product tab: catalog/map, workflow, or company map ("canvas"). */
 const { visual: v } = Astro.props;
 const card = "rounded-card border border-line bg-surface shadow-card";
 const positions =
@@ -22,14 +20,66 @@ const positions =
 ---
 
 {
-  v.type === "image" && (
-    <Image
-      src={getImage(v.src)}
-      alt={v.alt}
-      widths={[322, 619, 1238]}
-      sizes="(min-width: 1280px) 619px, (min-width: 1024px) 50vw, 100vw"
-      class="size-full object-cover object-top"
-    />
+  v.type === "catalog" && (
+    <div class="flex size-full min-h-80 overflow-hidden bg-canvas">
+      <!-- Dataset catalog pane -->
+      <div class="flex w-[42%] flex-col border-r border-line bg-surface">
+        <div class="border-b border-line px-3 py-2.5">
+          <p class="text-[10px] font-semibold tracking-[0.06em] text-subtle uppercase">{v.title}</p>
+          <div class="mt-2 flex items-center gap-2 rounded-field border border-line bg-canvas px-2.5 py-1.5 text-[11px] text-muted">
+            <LineIcon name="globe" class="size-3.5 shrink-0 text-brand-strong" />
+            <span class="truncate">{v.search}</span>
+          </div>
+        </div>
+        <p class="px-3 pt-2.5 pb-1 text-[10px] font-semibold tracking-[0.04em] text-subtle uppercase">{v.layersLabel}</p>
+        <ul class="flex flex-1 flex-col gap-1 overflow-hidden px-2 pb-3">
+          {v.datasets.map((ds) => (
+            <li
+              class={cn(
+                "flex items-start gap-2 rounded-field border px-2 py-1.5",
+                ds.active ? "border-brand/35 bg-brand-soft" : "border-transparent bg-transparent",
+              )}
+            >
+              <span class={cn("mt-0.5 size-2 shrink-0 rounded-full", ds.active ? "bg-brand-strong" : "bg-line-strong")} />
+              <span class="min-w-0">
+                <span class="block truncate text-[11px] leading-4 font-medium text-ink">{ds.name}</span>
+                <span class="block text-[10px] leading-3 text-muted">{ds.source}</span>
+              </span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <!-- Map preview pane -->
+      <div class="relative flex flex-1 flex-col">
+        <div class="flex items-center justify-between border-b border-line bg-surface px-3 py-2">
+          <p class="text-[10px] font-semibold tracking-[0.06em] text-subtle uppercase">{v.mapLabel}</p>
+          <span class="rounded-[3px] border border-line bg-canvas px-1.5 py-0.5 text-[9px] font-semibold text-muted">EPSG:28992</span>
+        </div>
+        <div class="relative flex-1 overflow-hidden bg-dots">
+          <!-- Abstract NL-ish map shapes -->
+          <svg viewBox="0 0 320 220" class="absolute inset-0 size-full text-line-strong" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+            <g fill="none" stroke="currentColor" stroke-width="1" opacity="0.45">
+              <path d="M40 40h240v140H40z" stroke-dasharray="4 4" />
+              <path d="M40 75h240M40 110h240M40 145h240M100 40v140M160 40v140M220 40v140" opacity="0.5" />
+            </g>
+            <path d="M70 160c18-28 32-48 58-62 20-11 42-18 70-14 22 3 40 14 54 32" stroke="var(--brand)" stroke-width="2.5" fill="none" opacity="0.85" />
+            <path d="M88 168c14-20 28-38 50-50 24-14 48-18 74-10" stroke="var(--layer-2)" stroke-width="1.75" fill="none" opacity="0.7" />
+            <g fill="var(--brand)" opacity="0.9">
+              <circle cx="128" cy="98" r="3.5" />
+              <circle cx="168" cy="86" r="3.5" />
+              <circle cx="198" cy="108" r="3.5" />
+              <circle cx="148" cy="128" r="3.5" />
+            </g>
+            <path d="M118 150 155 95 205 140 170 165Z" fill="var(--brand)" fill-opacity="0.12" stroke="var(--brand)" stroke-width="1.25" />
+          </svg>
+          <div class="absolute right-2 bottom-2 flex gap-1">
+            <span class="rounded-[3px] border border-line bg-surface/90 px-1.5 py-0.5 text-[9px] font-medium text-muted backdrop-blur-sm">BAG</span>
+            <span class="rounded-[3px] border border-line bg-surface/90 px-1.5 py-0.5 text-[9px] font-medium text-muted backdrop-blur-sm">PDOK</span>
+          </div>
+        </div>
+      </div>
+    </div>
   )
 }
 {
@@ -65,9 +115,9 @@ const positions =
           <line x1="50" y1="50" x2={p.x} y2={p.y} stroke="currentColor" stroke-width="0.3" stroke-dasharray="1 1" vector-effect="non-scaling-stroke" />
         ))}
       </svg>
-      <div class="absolute top-1/2 left-1/2 flex -translate-1/2 items-center gap-2 rounded-full border border-line bg-surface py-2 pr-4 pl-2 shadow-[0_0_0_8px_rgb(0_0_0/0.03)]">
-        <span class="flex size-8 items-center justify-center rounded-lg bg-ink text-white [--mark-bg:var(--ink)]">
-          <Icon name="logoMark" class="h-auto w-[13.83px]" />
+      <div class="absolute top-1/2 left-1/2 flex -translate-1/2 items-center gap-2 rounded-full border border-line bg-surface py-2 pr-4 pl-2 shadow-[0_0_0_8px_rgb(0_0_0/0.03)] dark:shadow-[0_0_0_8px_rgb(255_255_255/0.03)]">
+        <span class="flex size-8 items-center justify-center">
+          <Icon name="logoMark" class="size-7" />
         </span>
         <span class="font-heading-flex text-base font-semibold text-ink">{v.center}</span>
       </div>

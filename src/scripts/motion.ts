@@ -1,19 +1,6 @@
 /**
  * Site-wide scroll animations (plain JS + Motion's `animate` / `inView`).
- * Same values as the live Framer site: 0.8s, ease (0.22, 1, 0.36, 1),
- * rise 28px (mockups: 20px + 97% scale), items 0.1s apart.
- *
- * Use them with data attributes – no JavaScript needed in components:
- *   <div data-reveal>                      fade + rise once in view
- *   <div data-reveal="scale">              mockup style (97% → 100%)
- *   <div data-reveal data-delay="0.2">     start later (seconds)
- *   <div data-reveal data-y="40">          custom rise (px)
- *   <ul data-stagger data-gap="0.1">       children with data-stagger-item appear one by one
- *   <span data-count="94%">94%</span>      counts up when in view
- *   <div data-fit="1140">                  scales a fixed-width design down to fit (see ScaleToFit.astro)
- *
- * The start state is set in global.css (only when JS runs and motion is allowed),
- * so nothing flashes and content stays visible without JavaScript.
+ * Re-inits on every Astro ClientRouter navigation via `astro:page-load`.
  */
 import { animate, inView, stagger } from "motion";
 
@@ -32,6 +19,7 @@ function initReveals() {
     "[data-reveal]",
     (el) => {
       const node = el as HTMLElement;
+      if (node.hasAttribute("data-revealed")) return;
       const isScale = node.dataset.reveal === "scale";
       const lift = num(node.dataset.y, isScale ? 20 : 28);
       animate(
@@ -47,6 +35,7 @@ function initReveals() {
     "[data-stagger]",
     (el) => {
       const node = el as HTMLElement;
+      if (node.hasAttribute("data-revealed")) return;
       const items = node.querySelectorAll<HTMLElement>("[data-stagger-item]");
       if (!items.length) return;
       animate(
@@ -68,6 +57,7 @@ function initCountUp() {
     "[data-count]",
     (el) => {
       const node = el as HTMLElement;
+      if (node.dataset.countDone === "1") return;
       const value = node.dataset.count ?? "";
       const match = value.match(/^(\D*)([\d.,]+)(.*)$/);
       if (!match) return;
@@ -76,6 +66,7 @@ function initCountUp() {
       const decimals = number.split(".")[1]?.length ?? 0;
       const format = (v: number) =>
         prefix + v.toLocaleString("en-US", { minimumFractionDigits: decimals, maximumFractionDigits: decimals }) + suffix;
+      node.dataset.countDone = "1";
       animate(0, target, { duration: 1.6, ease: EASE, onUpdate: (v) => (node.textContent = format(v)) });
     },
     { amount: 0.6 },
@@ -94,8 +85,12 @@ function initScaleToFit() {
   });
 }
 
-initScaleToFit();
-if (!reduceMotion()) {
-  initReveals();
-  initCountUp();
+function boot() {
+  initScaleToFit();
+  if (!reduceMotion()) {
+    initReveals();
+    initCountUp();
+  }
 }
+
+document.addEventListener("astro:page-load", boot);

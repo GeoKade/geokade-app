@@ -5,13 +5,15 @@ import { cn, isActivePath } from "@/lib/utils";
 
 interface Props {
   links: readonly NavLink[];
+  openLabel?: string;
+  closeLabel?: string;
 }
 /**
  * Menu for small screens. The navbar stays on top and the same button turns from ☰ into ✕ in place.
  * The panel fills the screen below the navbar. Closes with Escape, the button or a link click.
  * Focus stays inside the menu while it is open; the page behind does not scroll.
  */
-const { links } = Astro.props;
+const { links, openLabel = "Open menu", closeLabel = "Close menu" } = Astro.props;
 const pathname = Astro.url.pathname;
 const icon = "absolute size-7 transition-[opacity,rotate,scale] duration-300 ease-out-expo";
 ---
@@ -21,7 +23,9 @@ const icon = "absolute size-7 transition-[opacity,rotate,scale] duration-300 eas
   data-menu-toggle
   aria-expanded="false"
   aria-controls="mobile-menu"
-  aria-label="Open menu"
+  aria-label={openLabel}
+  data-open-label={openLabel}
+  data-close-label={closeLabel}
   class="group relative -mr-2 flex size-11 items-center justify-center rounded-button text-ink hover:bg-canvas"
 >
   <Icon name="menu" class={cn(icon, "opacity-100 group-aria-expanded:scale-75 group-aria-expanded:rotate-90 group-aria-expanded:opacity-0")} />
@@ -58,10 +62,12 @@ const icon = "absolute size-7 transition-[opacity,rotate,scale] duration-300 eas
   import { animate, stagger } from "motion";
   import { EASE, reduceMotion } from "@/scripts/motion";
 
-  const toggle = document.querySelector<HTMLButtonElement>("[data-menu-toggle]");
-  const panel = document.querySelector<HTMLElement>("[data-menu-panel]");
+  function bindMobileMenu() {
+    const toggle = document.querySelector<HTMLButtonElement>("[data-menu-toggle]");
+    const panel = document.querySelector<HTMLElement>("[data-menu-panel]");
+    if (!toggle || !panel || toggle.dataset.bound === "1") return;
+    toggle.dataset.bound = "1";
 
-  if (toggle && panel) {
     let open = false;
     let saved = { overflow: "", paddingRight: "" };
     const items = panel.querySelectorAll<HTMLElement>("[data-menu-item]");
@@ -73,7 +79,6 @@ const icon = "absolute size-7 transition-[opacity,rotate,scale] duration-300 eas
         toggle.focus();
       }
       if (event.key === "Tab") {
-        // Focus trap: cycle between the toggle button and the menu links.
         const focusable = links();
         const first = focusable[0];
         const last = focusable[focusable.length - 1];
@@ -90,33 +95,31 @@ const icon = "absolute size-7 transition-[opacity,rotate,scale] duration-300 eas
     function setOpen(next: boolean) {
       if (next === open) return;
       open = next;
-      toggle!.setAttribute("aria-expanded", String(open));
-      toggle!.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+      toggle.setAttribute("aria-expanded", String(open));
+      toggle.setAttribute("aria-label", open ? toggle.dataset.closeLabel || "Close menu" : toggle.dataset.openLabel || "Open menu");
       const reduce = reduceMotion();
 
       if (open) {
-        // Start the panel exactly at the bottom edge of the navbar.
-        const header = toggle!.closest("header");
-        if (header) panel!.style.top = `${Math.round(header.getBoundingClientRect().bottom)}px`;
-        // Lock page scroll without a sideways jump when the scrollbar disappears.
+        const header = toggle.closest("header");
+        if (header) panel.style.top = `${Math.round(header.getBoundingClientRect().bottom)}px`;
         const scrollbar = window.innerWidth - document.documentElement.clientWidth;
         saved = { overflow: document.body.style.overflow, paddingRight: document.body.style.paddingRight };
         document.body.style.overflow = "hidden";
         if (scrollbar > 0) document.body.style.paddingRight = `${scrollbar}px`;
-        panel!.hidden = false;
+        panel.hidden = false;
         document.addEventListener("keydown", onKey);
         if (!reduce) {
-          animate(panel!, { opacity: [0, 1], y: [-8, 0] }, { duration: 0.3, ease: EASE });
+          animate(panel, { opacity: [0, 1], y: [-8, 0] }, { duration: 0.3, ease: EASE });
           animate(items, { opacity: [0, 1], y: [12, 0] }, { duration: 0.5, ease: EASE, delay: stagger(0.05, { startDelay: 0.08 }) });
         }
       } else {
         document.body.style.overflow = saved.overflow;
         document.body.style.paddingRight = saved.paddingRight;
         document.removeEventListener("keydown", onKey);
-        if (reduce) panel!.hidden = true;
+        if (reduce) panel.hidden = true;
         else
-          animate(panel!, { opacity: 0, y: -8 }, { duration: 0.3, ease: EASE }).then(() => {
-            if (!open) panel!.hidden = true;
+          animate(panel, { opacity: 0, y: -8 }, { duration: 0.3, ease: EASE }).then(() => {
+            if (!open) panel.hidden = true;
           });
       }
     }
@@ -125,4 +128,6 @@ const icon = "absolute size-7 transition-[opacity,rotate,scale] duration-300 eas
     panel.querySelectorAll("a").forEach((a) => a.addEventListener("click", () => setOpen(false)));
     window.matchMedia("(min-width: 64rem)").addEventListener("change", (e) => e.matches && setOpen(false));
   }
+
+  document.addEventListener("astro:page-load", bindMobileMenu);
 </script>

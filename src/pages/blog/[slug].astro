@@ -10,7 +10,8 @@ import { mdxComponents } from "@/components/mdx";
 import CornerSquares from "@/components/sections/CornerSquares.astro";
 import Container from "@/components/ui/Container.astro";
 import { blogPage } from "@/config/pages/blog";
-import { siteConfig } from "@/config/site";
+import { getSiteConfig } from "@/config/site";
+import { resolveLocale } from "@/i18n";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { formatDate, getPosts, type Post } from "@/lib/content";
 import { absoluteUrl } from "@/lib/seo";
@@ -25,6 +26,8 @@ interface Props {
   posts: Post[];
 }
 const { post, posts } = Astro.props;
+const locale = resolveLocale(Astro.currentLocale);
+const siteConfig = getSiteConfig(locale);
 const meta = post.data;
 const { Content, headings } = await render(post);
 const toc = headings.filter((h) => h.depth === 2);
@@ -39,10 +42,10 @@ const jsonLd = {
   headline: meta.title,
   description: meta.excerpt,
   datePublished: meta.date,
-  image: absoluteUrl(share.src),
+  image: absoluteUrl(share.src, locale),
   author: { "@type": "Person", name: meta.author.name },
   publisher: { "@type": "Organization", name: siteConfig.name },
-  mainEntityOfPage: absoluteUrl(`/blog/${post.id}`),
+  mainEntityOfPage: absoluteUrl(`/blog/${post.id}`, locale),
 };
 ---
 

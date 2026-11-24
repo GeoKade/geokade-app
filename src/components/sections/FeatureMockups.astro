@@ -12,7 +12,7 @@ interface Props {
  * All text lives in src/config/pages/home.ts → features[].visual.
  */
 const { visual: v } = Astro.props;
-const card = "absolute rounded-card border border-[#efefef] bg-surface shadow-card";
+const card = "absolute rounded-card border border-line bg-surface shadow-card";
 const label = "text-[10px] leading-4 tracking-[0.04em] text-subtle uppercase";
 const tones = {
   todo: "bg-status-todo-bg text-status-todo",
@@ -77,7 +77,7 @@ const fmt = (value: number, decimals = 0, suffix = "") => `${value.toFixed(decim
           <div class="absolute top-[34px] left-[66px] flex flex-col gap-[9px]">
             {v.funnel.map((row, i) => (
               <div data-funnel>
-                <div class="flex h-[39px] items-center gap-3 rounded-card border border-[#efefef] bg-surface px-3.5 shadow-card" style={`width: ${rowWidths[i]}px`}>
+                <div class="flex h-[39px] items-center gap-3 rounded-card border border-line bg-surface px-3.5 shadow-card" style={`width: ${rowWidths[i]}px`}>
                   <span class="text-[13px] text-subtle">{pad(i)}</span>
                   <span class="flex-1 text-[13px] font-medium text-ink">{row.label}</span>
                   <span class="font-heading-italic text-[15px] font-medium text-brand-strong tabular-nums" data-num data-value={row.value}>
@@ -154,7 +154,7 @@ const fmt = (value: number, decimals = 0, suffix = "") => `${value.toFixed(decim
   </div>
 </div>
 
-<script>
+<script data-astro-rerun>
   import { animate } from "motion";
   import { EASE_IN_OUT, SOFT_SPRING, loop, rollNumber, setClasses, swapText } from "@/scripts/loop";
 

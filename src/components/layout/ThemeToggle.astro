@@ -1,0 +1,55 @@
+---
+interface Props {
+  lightLabel: string;
+  darkLabel: string;
+}
+const { lightLabel, darkLabel } = Astro.props;
+---
+
+<button
+  type="button"
+  data-theme-toggle
+  data-light-label={lightLabel}
+  data-dark-label={darkLabel}
+  class="inline-flex size-9 items-center justify-center rounded-button border border-line bg-surface text-ink transition-colors hover:bg-canvas"
+  aria-label={lightLabel}
+>
+  <span data-theme-icon="dark" class="hidden dark:inline" aria-hidden="true">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
+      <circle cx="12" cy="12" r="4"></circle>
+      <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path>
+    </svg>
+  </span>
+  <span data-theme-icon="light" class="inline dark:hidden" aria-hidden="true">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
+      <path d="M21 14.5A8.5 8.5 0 1 1 11.5 3 7 7 0 0 0 21 14.5z"></path>
+    </svg>
+  </span>
+</button>
+
+<script>
+  function syncToggle(button: HTMLElement) {
+    const dark = document.documentElement.classList.contains("dark");
+    const lightLabel = button.dataset.lightLabel || "Light mode";
+    const darkLabel = button.dataset.darkLabel || "Dark mode";
+    button.setAttribute("aria-label", dark ? lightLabel : darkLabel);
+  }
+
+  function bindThemeToggles() {
+    document.querySelectorAll<HTMLElement>("[data-theme-toggle]").forEach((button) => {
+      if (button.dataset.bound === "1") return;
+      button.dataset.bound = "1";
+      syncToggle(button);
+      button.addEventListener("click", () => {
+        const next = document.documentElement.classList.contains("dark") ? "light" : "dark";
+        document.documentElement.classList.toggle("dark", next === "dark");
+        try {
+          localStorage.setItem("theme", next);
+        } catch {}
+        document.querySelectorAll<HTMLElement>("[data-theme-toggle]").forEach(syncToggle);
+      });
+    });
+  }
+
+  document.addEventListener("astro:page-load", bindThemeToggles);
+</script>

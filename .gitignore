@@ -26,3 +26,6 @@ pnpm-debug.log*
 # QA / design references (not part of the theme)
 design-ref/
 qa/
+
+# local notes
+docs/guide.md

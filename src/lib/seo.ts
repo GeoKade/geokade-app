@@ -1,16 +1,23 @@
-import { siteConfig } from "@/config/site";
+import { getSiteConfig } from "@/config/site";
+import { defaultLocale, type Locale } from "@/i18n";
 
-export const defaultTitle = `${siteConfig.name} – From idea to launch, handled for you`;
-
-/** Default share image (public/og.png, 1200×630). */
 export const defaultOgImage = { src: "/og.png", width: 1200, height: 630 };
 
-/** "Pricing" → "Pricing | Vaxnori AI". No title → the default site title. */
-export function pageTitle(title?: string) {
-  return title ? `${title} | ${siteConfig.name}` : defaultTitle;
+export function defaultTitle(locale: Locale = defaultLocale) {
+  const site = getSiteConfig(locale);
+  return locale === "nl"
+    ? `${site.name} – Van geospatial data naar actionable intelligence`
+    : `${site.name} – From geospatial data to actionable intelligence`;
+}
+
+/** "Pricing" → "Pricing | GeoKade". No title → the default site title. */
+export function pageTitle(title?: string, locale: Locale = defaultLocale) {
+  const site = getSiteConfig(locale);
+  return title ? `${title} | ${site.name}` : defaultTitle(locale);
 }
 
 /** Absolute URL for a path, using the `site` from astro.config.mjs. */
-export function absoluteUrl(path: string) {
-  return new URL(path, `${siteConfig.url}/`).toString();
+export function absoluteUrl(path: string, locale: Locale = defaultLocale) {
+  const site = getSiteConfig(locale);
+  return new URL(path, `${site.url}/`).toString();
 }

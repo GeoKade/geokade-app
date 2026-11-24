@@ -6,9 +6,14 @@ import LogoStrip from "@/components/sections/LogoStrip.astro";
 import PageHero from "@/components/sections/PageHero.astro";
 import StepRows from "@/components/sections/StepRows.astro";
 import VideoBlock from "@/components/sections/VideoBlock.astro";
-import { homePage } from "@/config/pages/home";
-import { howItWorksPage } from "@/config/pages/how-it-works";
+import { getHomePage } from "@/config/pages/home";
+import { getHowItWorksPage } from "@/config/pages/how-it-works";
+import { resolveLocale } from "@/i18n";
 import BaseLayout from "@/layouts/BaseLayout.astro";
+
+const locale = resolveLocale(Astro.currentLocale);
+const homePage = getHomePage(locale);
+const howItWorksPage = getHowItWorksPage(locale);
 ---
 
 <BaseLayout {...howItWorksPage.meta}>

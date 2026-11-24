@@ -11,8 +11,9 @@ export function isExternal(href: string) {
 /** True when `href` is the current page (or a parent section of it). */
 export function isActivePath(pathname: string, href: string) {
   const path = pathname.replace(/\/$/, "") || "/";
-  if (href === "/") return path === "/";
-  return path === href || path.startsWith(`${href}/`);
+  const target = href.replace(/\/$/, "") || "/";
+  if (target === "/" || /^\/[a-z]{2}$/.test(target)) return path === target;
+  return path === target || path.startsWith(`${target}/`);
 }
 
 /** "Control & Trust" → "control-trust" (ids for anchors). */

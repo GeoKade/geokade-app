@@ -12,8 +12,8 @@ const variants: Record<ButtonVariant, string> = {
   outline: "border border-line bg-surface text-ink hover:bg-canvas",
   "outline-brand": "border border-brand-strong bg-surface text-brand-strong hover:bg-brand-soft",
   ghost: "text-ink hover:bg-canvas",
-  dark: "bg-ink text-white hover:bg-ink/85",
-  "dark-raised": "bg-ink-raised text-white hover:bg-[#444]",
+  dark: "bg-band text-band-fg hover:bg-band/85",
+  "dark-raised": "bg-band-muted text-band-fg hover:bg-band-muted/80",
 };
 
 const sizes: Record<ButtonSize, string> = {

@@ -13,7 +13,7 @@ interface Props {
  * the script below resets it and plays the loop while the card is on screen.
  */
 const { card: c } = Astro.props;
-const card = "rounded-card border border-[#efefef] bg-surface shadow-card transition-[border-color,box-shadow] duration-700";
+const card = "rounded-card border border-line bg-surface shadow-card transition-[border-color,box-shadow] duration-700";
 const swap = "col-start-1 row-start-1";
 ---
 
@@ -118,7 +118,7 @@ const swap = "col-start-1 row-start-1";
   }
 </div>
 
-<script>
+<script data-astro-rerun>
   import { animate } from "motion";
   import { EASE_IN_OUT, SOFT_SPRING, appear, frame, loop, rollNumber, setClasses, swapText, typeText } from "@/scripts/loop";
 

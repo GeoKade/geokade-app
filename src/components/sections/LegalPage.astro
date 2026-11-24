@@ -3,7 +3,8 @@ import { render } from "astro:content";
 import TableOfContents from "@/components/blog/TableOfContents.astro";
 import { mdxComponents } from "@/components/mdx";
 import Container from "@/components/ui/Container.astro";
-import { homePage } from "@/config/pages/home";
+import { getHomePage } from "@/config/pages/home";
+import { resolveLocale } from "@/i18n";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { formatDate } from "@/lib/content";
 import type { CollectionEntry } from "astro:content";
@@ -15,6 +16,7 @@ interface Props {
 }
 /** Shared layout for Privacy and Terms: hero + sticky contents list + MDX body (src/content/legal/*.mdx). */
 const { entry } = Astro.props;
+const homePage = getHomePage(resolveLocale(Astro.currentLocale));
 const meta = entry.data;
 const { Content, headings } = await render(entry);
 const toc = headings.filter((h) => h.depth === 2);

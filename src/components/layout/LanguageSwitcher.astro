@@ -1,0 +1,36 @@
+---
+import { locales, localeMeta, switchLocalePath, type Locale } from "@/i18n";
+
+interface Props {
+  locale: Locale;
+  label: string;
+}
+const { locale, label } = Astro.props;
+const pathname = Astro.url.pathname;
+---
+
+<div class="relative flex items-center" data-lang-switcher>
+  <span class="sr-only">{label}</span>
+  <div class="inline-flex items-center gap-0.5 rounded-button border border-line bg-surface p-0.5" role="group" aria-label={label}>
+    {
+      locales.map((code) => {
+        const active = code === locale;
+        const href = switchLocalePath(pathname, code);
+        return (
+          <a
+            href={href}
+            lang={localeMeta[code].htmlLang}
+            hreflang={localeMeta[code].htmlLang}
+            aria-current={active ? "true" : undefined}
+            class:list={[
+              "rounded-[3px] px-2.5 py-1.5 text-xs font-semibold tracking-wide transition-colors",
+              active ? "bg-brand-strong text-white" : "text-muted hover:bg-canvas hover:text-ink",
+            ]}
+          >
+            {localeMeta[code].short}
+          </a>
+        );
+      })
+    }
+  </div>
+</div>

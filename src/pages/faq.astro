@@ -7,9 +7,12 @@ import Accordion from "@/components/ui/Accordion.astro";
 import Container from "@/components/ui/Container.astro";
 import Eyebrow from "@/components/ui/Eyebrow.astro";
 import { faqPage } from "@/config/pages/faq";
-import { homePage } from "@/config/pages/home";
+import { getHomePage } from "@/config/pages/home";
+import { resolveLocale } from "@/i18n";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { slugify } from "@/lib/utils";
+
+const homePage = getHomePage(resolveLocale(Astro.currentLocale));
 
 // Every answer is visible on the page, so FAQPage structured data is allowed.
 const jsonLd = {
