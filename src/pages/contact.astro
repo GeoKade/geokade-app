@@ -5,11 +5,16 @@ import LineIcon from "@/components/icons/LineIcon.astro";
 import PageHero from "@/components/sections/PageHero.astro";
 import Container from "@/components/ui/Container.astro";
 import SectionHeading from "@/components/ui/SectionHeading.astro";
-import { contactPage } from "@/config/pages/contact";
+import { getContactPage } from "@/config/pages/contact";
+import { getSiteConfig } from "@/config/site";
+import { resolveLocale } from "@/i18n";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { getImage } from "@/lib/images";
 
+const locale = resolveLocale(Astro.currentLocale);
+const contactPage = getContactPage(locale);
 const { channels, docs, form, locations } = contactPage;
+const showContactForm = getSiteConfig(locale).features.contactForm;
 ---
 
 <BaseLayout {...contactPage.meta}>
@@ -41,12 +46,12 @@ const { channels, docs, form, locations } = contactPage;
     </Container>
   </section>
 
-  <!-- Docs + office card | form -->
-  <section aria-labelledby="form-title">
-    <Container bordered class="grid border-t border-dashed border-t-line-strong lg:grid-cols-2">
+  <!-- Docs + office card | form (form gated by siteConfig.features.contactForm) -->
+  <section aria-labelledby={showContactForm ? "form-title" : "docs-title"}>
+    <Container bordered class:list={["border-t border-dashed border-t-line-strong", showContactForm && "grid lg:grid-cols-2"]}>
       <div class="flex flex-col gap-10 px-6 py-14 sm:px-8 lg:px-[49px] lg:py-12">
         <div data-reveal>
-          <SectionHeading eyebrow={docs.eyebrow} title={docs.title} accent={docs.accent} description={docs.description} titleClass="max-w-[300px] lg:max-w-[440px]" accentBreak />
+          <SectionHeading id="docs-title" eyebrow={docs.eyebrow} title={docs.title} accent={docs.accent} description={docs.description} titleClass="max-w-[300px] lg:max-w-[440px]" accentBreak />
         </div>
         <div data-reveal="scale" data-delay="0.1" class="relative overflow-hidden border border-line bg-canvas p-4 pt-16 lg:-mx-[49px] lg:border-0 lg:bg-transparent lg:px-[49px] lg:pt-20 lg:pb-2">
           <Image src={getImage(docs.office.map)} alt="" widths={[300, 600, 822]} sizes="300px" class="pointer-events-none absolute top-0 right-0 h-auto w-[62%] max-w-[360px]" />
@@ -66,16 +71,20 @@ const { channels, docs, form, locations } = contactPage;
           </dl>
         </div>
       </div>
-      <div class="border-dashed border-line-strong px-6 pb-14 sm:px-8 lg:border-l lg:px-[41px] lg:py-12">
-        <div data-reveal class="mb-8">
-          <h2 id="form-title" class="font-heading-flex text-2xl leading-7 font-medium tracking-[-0.03em] text-ink lg:text-h3 lg:leading-[38px]">
-            {form.title}{" "}<span class="block font-pixel-line text-accent-text">{form.accent}</span>
-          </h2>
-        </div>
-        <div data-reveal data-delay="0.1">
-          <ContactForm labels={form} />
-        </div>
-      </div>
+      {
+        showContactForm && (
+          <div class="border-dashed border-line-strong px-6 pb-14 sm:px-8 lg:border-l lg:px-[41px] lg:py-12">
+            <div data-reveal class="mb-8">
+              <h2 id="form-title" class="font-heading-flex text-2xl leading-7 font-medium tracking-[-0.03em] text-ink lg:text-h3 lg:leading-[38px]">
+                {form.title}{" "}<span class="block font-pixel-line text-accent-text">{form.accent}</span>
+              </h2>
+            </div>
+            <div data-reveal data-delay="0.1">
+              <ContactForm labels={form} />
+            </div>
+          </div>
+        )
+      }
     </Container>
   </section>
 

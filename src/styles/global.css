@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+/* Class-based dark mode (html.dark) — not only prefers-color-scheme */
+@custom-variant dark (&:where(.dark, .dark *));
+
 /*
  * Fonts – all free (SIL Open Font License 1.1), self-hosted from npm (Fontsource).
  * The axis files keep the axes the Figma design uses:
@@ -20,41 +23,100 @@
  * (bg-brand, text-ink, border-line, font-heading, ...).
  */
 :root {
-  /* Brand */
-  --brand: #ff4820; /* Figma "Primary" – decorative fills, icons, large shapes */
-  /* Buttons + small brand text (Figma "Primary"). White on #ff4820 is 3.4:1 – below WCAG AA (4.5:1).
-     For full WCAG AA contrast use #cc340b here (and #737373 for --grey-3). */
-  --brand-strong: #ff4820;
-  --brand-hover: #e63b15;
+  /* Brand — action / CTA orange */
+  --brand: #ff4820;
+  --brand-strong: #e63b15;
+  --brand-hover: #cc340b;
   --brand-soft: #fff1ec;
 
-  /* Neutrals */
-  --ink: #000000; /* Figma "Black" */
-  --ink-soft: #050505;
-  --muted: #5e5e5e; /* Figma "Grey 1" – body copy */
-  --subtle: #737373; /* Small labels. Figma "Grey 3" (#999) darkened for 4.5:1 */
-  --grey-3: #999999; /* Figma "Grey 3" – blog meta (date, read time) */
-  --grey-2: #6b6b6b; /* Figma "Gray 2" – blog card date + excerpt */
-  --accent-text: #5e5e5e; /* Pixel accent words in headings (Figma "Grey 1") */
-  --surface-muted: #f0f0f0; /* Secondary button */
-  --ink-raised: #333333; /* Dark button on black */
+  /* Layer mark accents (logo stack — brand orange) */
+  --layer-1: #ffb088;
+  --layer-2: #ff4820;
+  --layer-3: #c2410c;
+
+  /* Neutrals — warm editorial */
+  --ink: #141210;
+  --ink-soft: #1c1917;
+  --muted: #57534e;
+  --subtle: #78716c;
+  --grey-3: #a8a29e;
+  --grey-2: #78716c;
+  --accent-text: #57534e;
+  --surface-muted: #f5f5f4;
+  --ink-raised: #292524;
 
   /* Status chips used in product mockups */
   --status-progress: #c2410c;
   --status-progress-bg: #fef5f0;
   --status-todo: #6941c6;
   --status-todo-bg: #f9f5ff;
-  --status-done: #047857;
-  /* Solid green for "Approved / Sent / Done" fills with white text (4.5:1+) */
-  --success: #15803d;
-  --status-done-bg: #edf9f4;
+  --status-done: #0f766e;
+  --success: #0f766e;
+  --status-done-bg: #ecfdf5;
   --status-queued: #0369a1;
   --status-queued-bg: #eef7fe;
-  --surface: #ffffff; /* Figma "White" */
-  --canvas: #fbfbfb; /* Figma "BG" */
-  --line: #e3e3e3; /* Figma "Stroke 2" */
-  --line-strong: #d4d4d4; /* Figma "Stroke 1" */
-  --line-soft: #f1f1f1; /* Figma "Strock 3" */
+  --surface: #ffffff;
+  --canvas: #fafaf9;
+  --line: #e7e5e4;
+  --line-strong: #d6d3d1;
+  --line-soft: #f5f5f4;
+
+  /* Intentional dark band (CTA) — stays dark in both themes */
+  --band: #141210;
+  --band-muted: #292524;
+  --band-fg: #fafaf9;
+
+  --elevate-card: 0 2px 10px 0 rgb(20 18 16 / 0.04);
+  --elevate-frame: 0 2px 8px 0 rgb(20 18 16 / 0.06);
+}
+
+/*
+ * Dark theme — warm charcoal, teal depth, ember CTAs.
+ * Avoid cold blue-grey wash; keep contrast editorial and calm.
+ */
+.dark {
+  --brand: #ff6a3d;
+  --brand-strong: #ff7f55;
+  --brand-hover: #ffa07a;
+  --brand-soft: #2a1610;
+
+  --layer-1: #ffc4a3;
+  --layer-2: #ff6a3d;
+  --layer-3: #e04a18;
+
+  --ink: #f7f4ef;
+  --ink-soft: #efeae3;
+  --muted: #b0a99f;
+  --subtle: #948c82;
+  --grey-3: #948c82;
+  --grey-2: #b0a99f;
+  --accent-text: #b0a99f;
+  --surface-muted: #24201c;
+  --ink-raised: #d6d3d1;
+
+  --status-progress: #fb923c;
+  --status-progress-bg: #2a1a10;
+  --status-todo: #c4b5fd;
+  --status-todo-bg: #1c1630;
+  --status-done: #4ade80;
+  --success: #4ade80;
+  --status-done-bg: #10241c;
+  --status-queued: #7dd3fc;
+  --status-queued-bg: #0f2230;
+
+  /* Elevated cards on a deeper canvas — what people expect from dark UI */
+  --surface: #1a1714;
+  --canvas: #0e0c0a;
+  --line: #322e29;
+  --line-strong: #45403a;
+  --line-soft: #221f1b;
+
+  --band: #080706;
+  --band-muted: #24201c;
+  --band-fg: #f7f4ef;
+
+  --elevate-card: 0 8px 28px -8px rgb(0 0 0 / 0.55), 0 0 0 1px rgb(255 255 255 / 0.03);
+  --elevate-frame: 0 6px 20px -6px rgb(0 0 0 / 0.5);
 }
 
 @theme inline {
@@ -85,6 +147,15 @@
   --color-line: var(--line);
   --color-line-strong: var(--line-strong);
   --color-line-soft: var(--line-soft);
+  --color-band: var(--band);
+  --color-band-muted: var(--band-muted);
+  --color-band-fg: var(--band-fg);
+  --color-layer-1: var(--layer-1);
+  --color-layer-2: var(--layer-2);
+  --color-layer-3: var(--layer-3);
+
+  --shadow-card: var(--elevate-card);
+  --shadow-frame: var(--elevate-frame);
 
   /* Fonts (imported at the top of this file) */
   --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
@@ -111,10 +182,6 @@
   --radius-button: 4px;
   --radius-field: 6px;
   --radius-card: 8px;
-
-  /* Shadow (Figma effect "1") */
-  --shadow-card: 0 2px 10px 0 rgb(0 0 0 / 0.03);
-  --shadow-frame: 0 2px 8px 0 rgb(0 0 0 / 0.06);
 
   /* Layout */
   --container-site: 77.5rem; /* 1240px – the bordered content column */
@@ -161,8 +228,8 @@
     50% { opacity: 0.45; }
   }
   @keyframes step-glow {
-    0%, 30%, 100% { border-color: var(--line); box-shadow: var(--shadow-card); }
-    6%, 24% { border-color: var(--brand); box-shadow: 0 0 0 4px rgb(255 72 32 / 0.12); }
+    0%, 30%, 100% { border-color: var(--line); box-shadow: var(--elevate-card); }
+    6%, 24% { border-color: var(--brand); box-shadow: 0 0 0 4px color-mix(in oklab, var(--brand) 20%, transparent); }
   }
   @keyframes dot-travel {
     0% { offset-distance: 0%; opacity: 0; }
@@ -228,7 +295,7 @@
 /* Dotted canvas background used behind mockups */
 @utility bg-dots {
   background-color: var(--canvas);
-  background-image: radial-gradient(circle at 1px 1px, #dcdcdc 1px, transparent 0);
+  background-image: radial-gradient(circle at 1px 1px, color-mix(in oklab, var(--line-strong) 80%, transparent) 1px, transparent 0);
   background-size: 10px 10px;
 }
 

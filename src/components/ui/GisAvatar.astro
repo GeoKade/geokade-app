@@ -1,0 +1,289 @@
+---
+export type GisAvatarVariant = "layers" | "pin" | "grid" | "orbit";
+
+interface Props {
+  name: string;
+  variant: GisAvatarVariant;
+  class?: string;
+}
+
+/** Animated GIS-themed avatar (SVG + CSS). Respects prefers-reduced-motion. */
+const { name, variant, class: className } = Astro.props;
+const initial = name.trim().charAt(0).toUpperCase() || "?";
+---
+
+<div class:list={["gis-avatar relative aspect-[266/338] overflow-hidden bg-canvas", className]} data-variant={variant}>
+  <svg
+    class="absolute inset-0 size-full"
+    viewBox="0 0 266 338"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    role="img"
+    aria-label={`${name} — GIS avatar`}
+  >
+    <defs>
+      <linearGradient id={`sky-${variant}`} x1="133" y1="0" x2="133" y2="338" gradientUnits="userSpaceOnUse">
+        <stop stop-color="var(--surface-muted)" />
+        <stop offset="1" stop-color="var(--canvas)" />
+      </linearGradient>
+      <pattern id={`grid-${variant}`} width="22" height="22" patternUnits="userSpaceOnUse">
+        <path d="M22 0H0V22" stroke="var(--line)" stroke-width="1" />
+      </pattern>
+      <clipPath id={`frame-${variant}`}>
+        <rect width="266" height="338" rx="0" />
+      </clipPath>
+    </defs>
+
+    <rect width="266" height="338" fill={`url(#sky-${variant})`} />
+    <g class="gis-avatar__grid" clip-path={`url(#frame-${variant})`} opacity="0.55">
+      <rect width="320" height="400" x="-20" y="-20" fill={`url(#grid-${variant})`} />
+    </g>
+
+    {/* Contour / map decoration by variant */}
+    {
+      variant === "layers" && (
+        <g class="gis-avatar__motif" opacity="0.9">
+          <rect class="gis-avatar__layer gis-avatar__layer--1" x="48" y="214" width="170" height="42" rx="8" fill="var(--layer-1)" />
+          <rect class="gis-avatar__layer gis-avatar__layer--2" x="58" y="198" width="150" height="42" rx="8" fill="var(--layer-2)" />
+          <rect class="gis-avatar__layer gis-avatar__layer--3" x="68" y="182" width="130" height="42" rx="8" fill="var(--layer-3)" />
+          <path d="M78 198h110M68 214h130M58 230h150" stroke="var(--surface)" stroke-opacity="0.35" stroke-width="1.5" stroke-linecap="round" />
+        </g>
+      )
+    }
+    {
+      variant === "pin" && (
+        <g class="gis-avatar__motif" opacity="0.95">
+          <path
+            class="gis-avatar__contour"
+            d="M20 250c28-18 52-8 78-22s48-28 76-14 44 8 72-10"
+            stroke="var(--brand)"
+            stroke-opacity="0.35"
+            stroke-width="2"
+            stroke-linecap="round"
+          />
+          <path
+            class="gis-avatar__contour"
+            d="M12 278c34-14 58-4 88-18s52-22 80-8 40 6 66-12"
+            stroke="var(--ink)"
+            stroke-opacity="0.12"
+            stroke-width="2"
+            stroke-linecap="round"
+          />
+          <g transform="translate(133 236)">
+            <g class="gis-avatar__pin">
+              <path d="M0-38c-14 0-26 11-26 26 0 20 26 42 26 42s26-22 26-42c0-15-12-26-26-26Z" fill="var(--brand)" />
+              <circle cy="-14" r="9" fill="var(--surface)" />
+            </g>
+            <ellipse class="gis-avatar__pin-shadow" cx="0" cy="28" rx="18" ry="5" fill="var(--ink)" opacity="0.12" />
+          </g>
+        </g>
+      )
+    }
+    {
+      variant === "grid" && (
+        <g class="gis-avatar__motif" opacity="0.9">
+          <circle class="gis-avatar__radar" cx="133" cy="250" r="54" stroke="var(--brand)" stroke-opacity="0.25" stroke-width="1.5" />
+          <circle class="gis-avatar__radar gis-avatar__radar--2" cx="133" cy="250" r="36" stroke="var(--brand)" stroke-opacity="0.4" stroke-width="1.5" />
+          <path class="gis-avatar__scan" d="M133 250 L187 206" stroke="var(--brand)" stroke-width="2" stroke-linecap="round" />
+          <circle cx="133" cy="250" r="5" fill="var(--brand)" />
+          <g stroke="var(--ink)" stroke-opacity="0.14" stroke-width="1.25">
+            <path d="M40 210h186M40 230h186M40 250h186M40 270h186M40 290h186" />
+            <path d="M70 190v120M100 190v120M133 190v120M166 190v120M196 190v120" />
+          </g>
+        </g>
+      )
+    }
+    {
+      variant === "orbit" && (
+        <g class="gis-avatar__motif" opacity="0.95">
+          <ellipse class="gis-avatar__orbit" cx="133" cy="248" rx="78" ry="28" stroke="var(--brand)" stroke-opacity="0.35" stroke-width="1.5" />
+          <ellipse class="gis-avatar__orbit gis-avatar__orbit--2" cx="133" cy="248" rx="52" ry="18" stroke="var(--ink)" stroke-opacity="0.15" stroke-width="1.25" />
+          <g class="gis-avatar__sat-wrap" transform="translate(133 248)">
+            <circle class="gis-avatar__sat" cx="78" cy="0" r="6" fill="var(--brand)" />
+          </g>
+          <circle cx="133" cy="248" r="8" fill="var(--ink)" />
+          <circle class="gis-avatar__node" cx="81" cy="236" r="4" fill="var(--layer-1)" />
+          <circle class="gis-avatar__node gis-avatar__node--2" cx="175" cy="262" r="4" fill="var(--layer-2)" />
+          <path d="M133 248 L81 236 M133 248 L175 262" stroke="var(--ink)" stroke-opacity="0.2" stroke-width="1.25" />
+        </g>
+      )
+    }
+
+    {/* Avatar disc + initial */}
+    <g class="gis-avatar__face">
+      <circle cx="133" cy="118" r="58" fill="var(--brand-soft)" />
+      <circle cx="133" cy="118" r="58" stroke="var(--brand)" stroke-opacity="0.22" stroke-width="2" />
+      <circle class="gis-avatar__ring" cx="133" cy="118" r="66" stroke="var(--brand)" stroke-opacity="0.18" stroke-width="1.5" stroke-dasharray="6 8" />
+      <text
+        x="133"
+        y="128"
+        text-anchor="middle"
+        fill="var(--brand-strong)"
+        font-size="52"
+        font-weight="700"
+        font-family="var(--font-heading), system-ui, sans-serif"
+        letter-spacing="-0.02em">{initial}</text>
+    </g>
+  </svg>
+</div>
+
+<style>
+  .gis-avatar__grid {
+    transform-origin: center;
+    animation: gis-grid-drift 18s linear infinite;
+  }
+
+  .gis-avatar__ring {
+    transform-origin: 133px 118px;
+    animation: gis-spin 24s linear infinite;
+  }
+
+  .gis-avatar__layer--1 {
+    animation: gis-layer-float 4.2s ease-in-out infinite;
+  }
+  .gis-avatar__layer--2 {
+    animation: gis-layer-float 4.2s ease-in-out 0.25s infinite;
+  }
+  .gis-avatar__layer--3 {
+    animation: gis-layer-float 4.2s ease-in-out 0.5s infinite;
+  }
+
+  .gis-avatar__pin {
+    animation: gis-pin-bounce 2.4s ease-in-out infinite;
+  }
+  .gis-avatar__pin-shadow {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: gis-pin-shadow 2.4s ease-in-out infinite;
+  }
+  .gis-avatar__contour {
+    stroke-dasharray: 8 10;
+    animation: gis-dash 10s linear infinite;
+  }
+
+  .gis-avatar__scan {
+    transform-origin: 133px 250px;
+    animation: gis-scan 3.6s linear infinite;
+  }
+  .gis-avatar__radar {
+    transform-origin: 133px 250px;
+    animation: gis-pulse 3.6s ease-out infinite;
+  }
+  .gis-avatar__radar--2 {
+    animation-delay: 0.6s;
+  }
+
+  .gis-avatar__sat-wrap {
+    transform-origin: 133px 248px;
+    animation: gis-orbit 7s linear infinite;
+  }
+  .gis-avatar__sat {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: gis-sat-bob 7s ease-in-out infinite;
+  }
+  .gis-avatar__orbit {
+    animation: gis-pulse 5s ease-in-out infinite;
+  }
+  .gis-avatar__node {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: gis-node 2.8s ease-in-out infinite;
+  }
+  .gis-avatar__node--2 {
+    animation-delay: 0.7s;
+  }
+
+  @keyframes gis-grid-drift {
+    from {
+      transform: translate3d(0, 0, 0);
+    }
+    to {
+      transform: translate3d(-22px, -22px, 0);
+    }
+  }
+  @keyframes gis-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  @keyframes gis-layer-float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-6px);
+    }
+  }
+  @keyframes gis-pin-bounce {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-8px);
+    }
+  }
+  @keyframes gis-pin-shadow {
+    0%,
+    100% {
+      opacity: 0.12;
+      transform: scaleX(1);
+    }
+    50% {
+      opacity: 0.06;
+      transform: scaleX(0.75);
+    }
+  }
+  @keyframes gis-dash {
+    to {
+      stroke-dashoffset: -120;
+    }
+  }
+  @keyframes gis-scan {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  @keyframes gis-pulse {
+    0%,
+    100% {
+      opacity: 0.35;
+    }
+    50% {
+      opacity: 0.85;
+    }
+  }
+  @keyframes gis-orbit {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  @keyframes gis-sat-bob {
+    0%,
+    100% {
+      transform: translateY(0) scaleY(1);
+    }
+    50% {
+      transform: translateY(4px) scaleY(0.85);
+    }
+  }
+  @keyframes gis-node {
+    0%,
+    100% {
+      opacity: 0.55;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.25);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .gis-avatar :global([class*="gis-avatar__"]) {
+      animation: none !important;
+    }
+  }
+</style>

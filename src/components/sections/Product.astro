@@ -78,8 +78,8 @@ const id = "product";
             <div
               data-panel-visual
               class={cn(
-                "aspect-[322/208] w-full overflow-hidden border-[0.5px] border-[#e6e6e6] bg-surface shadow-frame lg:aspect-[619/401]",
-                tab.visual.type !== "image" && "max-sm:aspect-auto max-sm:min-h-80",
+                "aspect-[322/208] w-full overflow-hidden border border-line bg-surface shadow-frame lg:aspect-[619/401]",
+                "max-sm:aspect-auto max-sm:min-h-80",
               )}
             >
               <ProductVisuals visual={tab.visual} />
@@ -95,44 +95,48 @@ const id = "product";
   import { animate, stagger } from "motion";
   import { EASE, reduceMotion } from "@/scripts/motion";
 
-  document.querySelectorAll<HTMLElement>("[data-tabs]").forEach((root) => {
-    const tabs = [...root.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
-    const panels = tabs.map((t) => root.querySelector<HTMLElement>(`#${t.getAttribute("aria-controls")}`)!);
-    let active = 0;
+  function bindProductTabs() {
+    document.querySelectorAll<HTMLElement>("[data-tabs]").forEach((root) => {
+      if (root.dataset.bound === "1") return;
+      root.dataset.bound = "1";
+      const tabs = [...root.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
+      const panels = tabs.map((t) => root.querySelector<HTMLElement>(`#${t.getAttribute("aria-controls")}`)!);
+      let active = 0;
 
-    const select = (next: number, focus = false) => {
-      next = (next + tabs.length) % tabs.length;
-      if (focus) tabs[next].focus();
-      if (next === active) return;
-      const from = tabs[active].querySelector<HTMLElement>("[data-underline]")!.getBoundingClientRect();
-      tabs.forEach((tab, i) => {
-        tab.setAttribute("aria-selected", String(i === next));
-        tab.tabIndex = i === next ? 0 : -1;
-        panels[i].hidden = i !== next;
+      const select = (next: number, focus = false) => {
+        next = (next + tabs.length) % tabs.length;
+        if (focus) tabs[next].focus();
+        if (next === active) return;
+        const from = tabs[active].querySelector<HTMLElement>("[data-underline]")!.getBoundingClientRect();
+        tabs.forEach((tab, i) => {
+          tab.setAttribute("aria-selected", String(i === next));
+          tab.tabIndex = i === next ? 0 : -1;
+          panels[i].hidden = i !== next;
+        });
+        active = next;
+        if (reduceMotion()) return;
+
+        const line = tabs[next].querySelector<HTMLElement>("[data-underline]")!;
+        const to = line.getBoundingClientRect();
+        animate(line, { x: [from.left - to.left, 0], scaleX: [to.width > 0 && from.width > 0 ? from.width / to.width : 1, 1] }, { type: "spring", stiffness: 400, damping: 34 });
+
+        const panel = panels[next];
+        animate(panel.querySelector("[data-panel-text]")!, { opacity: [0, 1], x: [-16, 0], filter: ["blur(4px)", "blur(0px)"] }, { duration: 0.6, ease: EASE });
+        animate(panel.querySelectorAll("[data-panel-point]"), { opacity: [0, 1], y: [8, 0] }, { duration: 0.5, ease: EASE, delay: stagger(0.08, { startDelay: 0.15 }) });
+        animate(panel.querySelector("[data-panel-visual]")!, { opacity: [0, 1], y: [24, 0], scale: [0.97, 1] }, { duration: 0.7, ease: EASE });
+      };
+
+      tabs.forEach((tab, i) => tab.addEventListener("click", () => select(i)));
+      root.querySelector('[role="tablist"]')!.addEventListener("keydown", (event) => {
+        const e = event as KeyboardEvent;
+        const keys: Record<string, number> = { ArrowRight: active + 1, ArrowLeft: active - 1, Home: 0, End: tabs.length - 1 };
+        if (e.key in keys) {
+          e.preventDefault();
+          select(keys[e.key], true);
+        }
       });
-      active = next;
-      if (reduceMotion()) return;
-
-      // Underline slides from the old tab to the new one (like Motion's layoutId).
-      const line = tabs[next].querySelector<HTMLElement>("[data-underline]")!;
-      const to = line.getBoundingClientRect();
-      animate(line, { x: [from.left - to.left, 0], scaleX: [to.width > 0 && from.width > 0 ? from.width / to.width : 1, 1] }, { type: "spring", stiffness: 400, damping: 34 });
-
-      // Panel content plays its entrance again.
-      const panel = panels[next];
-      animate(panel.querySelector("[data-panel-text]")!, { opacity: [0, 1], x: [-16, 0], filter: ["blur(4px)", "blur(0px)"] }, { duration: 0.6, ease: EASE });
-      animate(panel.querySelectorAll("[data-panel-point]"), { opacity: [0, 1], y: [8, 0] }, { duration: 0.5, ease: EASE, delay: stagger(0.08, { startDelay: 0.15 }) });
-      animate(panel.querySelector("[data-panel-visual]")!, { opacity: [0, 1], y: [24, 0], scale: [0.97, 1] }, { duration: 0.7, ease: EASE });
-    };
-
-    tabs.forEach((tab, i) => tab.addEventListener("click", () => select(i)));
-    root.querySelector('[role="tablist"]')!.addEventListener("keydown", (event) => {
-      const e = event as KeyboardEvent;
-      const keys: Record<string, number> = { ArrowRight: active + 1, ArrowLeft: active - 1, Home: 0, End: tabs.length - 1 };
-      if (e.key in keys) {
-        e.preventDefault();
-        select(keys[e.key], true);
-      }
     });
-  });
+  }
+
+  document.addEventListener("astro:page-load", bindProductTabs);
 </script>

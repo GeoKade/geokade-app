@@ -36,35 +36,40 @@ const pathname = Astro.url.pathname;
 
   const spring = { type: "spring", stiffness: 420, damping: 36 } as const;
 
-  document.querySelectorAll<HTMLElement>("[data-nav-links]").forEach((list) => {
-    const pill = list.querySelector<HTMLElement>("[data-nav-hover]");
-    if (!pill) return;
-    let visible = false;
+  function bindNavLinks() {
+    document.querySelectorAll<HTMLElement>("[data-nav-links]").forEach((list) => {
+      if (list.dataset.bound === "1") return;
+      list.dataset.bound = "1";
+      const pill = list.querySelector<HTMLElement>("[data-nav-hover]");
+      if (!pill) return;
+      let visible = false;
 
-    const moveTo = (link: HTMLElement) => {
-      const li = link.parentElement as HTMLElement;
-      const x = li.offsetLeft + 4;
-      const width = li.offsetWidth - 9; // inset 4px each side, minus the 1px divider
-      if (!visible) {
-        // First hover: appear in place (no slide from the left edge).
-        pill.style.transform = `translateX(${x}px)`;
-        pill.style.width = `${width}px`;
-        animate(pill, { opacity: 1 }, { duration: 0.15 });
-      } else {
-        animate(pill, { x, width }, spring);
-      }
-      visible = true;
-    };
-    const hide = () => {
-      visible = false;
-      animate(pill, { opacity: 0 }, { duration: 0.15 });
-    };
+      const moveTo = (link: HTMLElement) => {
+        const li = link.parentElement as HTMLElement;
+        const x = li.offsetLeft + 4;
+        const width = li.offsetWidth - 9;
+        if (!visible) {
+          pill.style.transform = `translateX(${x}px)`;
+          pill.style.width = `${width}px`;
+          animate(pill, { opacity: 1 }, { duration: 0.15 });
+        } else {
+          animate(pill, { x, width }, spring);
+        }
+        visible = true;
+      };
+      const hide = () => {
+        visible = false;
+        animate(pill, { opacity: 0 }, { duration: 0.15 });
+      };
 
-    list.querySelectorAll<HTMLElement>("a").forEach((link) => {
-      link.addEventListener("mouseenter", () => moveTo(link));
-      link.addEventListener("focus", () => moveTo(link));
-      link.addEventListener("blur", hide);
+      list.querySelectorAll<HTMLElement>("a").forEach((link) => {
+        link.addEventListener("mouseenter", () => moveTo(link));
+        link.addEventListener("focus", () => moveTo(link));
+        link.addEventListener("blur", hide);
+      });
+      list.addEventListener("mouseleave", hide);
     });
-    list.addEventListener("mouseleave", hide);
-  });
+  }
+
+  document.addEventListener("astro:page-load", bindNavLinks);
 </script>

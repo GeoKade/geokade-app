@@ -1,5 +1,5 @@
 {
-  "name": "vaxnori-astro-theme",
+  "name": "geokade-app",
   "type": "module",
   "version": "1.0.0",
   "engines": {
@@ -30,13 +30,13 @@
     "@astrojs/check": "^0.9.12",
     "typescript": "^6.0.3"
   },
-  "description": "Vaxnori AI – a free, open-source Astro theme for AI and SaaS products: 25 pages, smooth animations, MDX blog and careers.",
+  "description": "GeoKade corporate website — geospatial intelligence for European organisations.",
   "license": "MIT",
-  "author": "Wavespace",
-  "homepage": "https://vaxnori-astro-theme.vercel.app",
+  "author": "GeoKade",
+  "homepage": "https://geokade.com",
   "repository": {
     "type": "git",
-    "url": "https://github.com/WavespaceAgency/vaxnori-astro-theme.git"
+    "url": "https://github.com/GeoKade/geokade-app.git"
   },
   "keywords": [
     "astro",

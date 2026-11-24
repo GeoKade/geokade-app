@@ -108,35 +108,41 @@ const Heading = `h${headingLevel}` as "h2" | "h3" | "h4";
   import { animate } from "motion";
   import { EASE, reduceMotion } from "@/scripts/motion";
 
-  document.querySelectorAll<HTMLElement>("[data-accordion]").forEach((root) => {
-    const buttons = [...root.querySelectorAll<HTMLButtonElement>("button[aria-controls]")];
+  function bindAccordions() {
+    document.querySelectorAll<HTMLElement>("[data-accordion]").forEach((root) => {
+      if (root.dataset.bound === "1") return;
+      root.dataset.bound = "1";
+      const buttons = [...root.querySelectorAll<HTMLButtonElement>("button[aria-controls]")];
 
-    const set = (button: HTMLButtonElement, open: boolean) => {
-      if ((button.getAttribute("aria-expanded") === "true") === open) return;
-      const panel = document.getElementById(button.getAttribute("aria-controls")!)!;
-      const answer = panel.querySelector<HTMLElement>("[data-answer]")!;
-      const bar = button.closest("[data-acc-item]")!.querySelector<SVGPathElement>("[data-plus-bar]");
-      button.setAttribute("aria-expanded", String(open));
-      panel.inert = !open;
-      if (open) panel.removeAttribute("aria-hidden");
-      else panel.setAttribute("aria-hidden", "true");
+      const set = (button: HTMLButtonElement, open: boolean) => {
+        if ((button.getAttribute("aria-expanded") === "true") === open) return;
+        const panel = document.getElementById(button.getAttribute("aria-controls")!)!;
+        const answer = panel.querySelector<HTMLElement>("[data-answer]")!;
+        const bar = button.closest("[data-acc-item]")!.querySelector<SVGPathElement>("[data-plus-bar]");
+        button.setAttribute("aria-expanded", String(open));
+        panel.inert = !open;
+        if (open) panel.removeAttribute("aria-hidden");
+        else panel.setAttribute("aria-hidden", "true");
 
-      const d = reduceMotion() ? 0 : 0.45;
-      const from = panel.offsetHeight;
-      const to = open ? panel.scrollHeight : 0;
-      animate(panel, { height: [from, to], opacity: open ? 1 : 0 }, { duration: d, ease: EASE }).then(() => {
-        if (button.getAttribute("aria-expanded") === "true") panel.style.height = "auto";
-      });
-      animate(answer, { y: open ? 0 : -8 }, { duration: d, ease: EASE });
-      if (bar) animate(bar, { scaleY: open ? 0 : 1, rotate: open ? 90 : 0 }, { duration: reduceMotion() ? 0 : 0.35, ease: EASE });
-    };
+        const d = reduceMotion() ? 0 : 0.45;
+        const from = panel.offsetHeight;
+        const to = open ? panel.scrollHeight : 0;
+        animate(panel, { height: [from, to], opacity: open ? 1 : 0 }, { duration: d, ease: EASE }).then(() => {
+          if (button.getAttribute("aria-expanded") === "true") panel.style.height = "auto";
+        });
+        animate(answer, { y: open ? 0 : -8 }, { duration: d, ease: EASE });
+        if (bar) animate(bar, { scaleY: open ? 0 : 1, rotate: open ? 90 : 0 }, { duration: reduceMotion() ? 0 : 0.35, ease: EASE });
+      };
 
-    buttons.forEach((button) =>
-      button.addEventListener("click", () => {
-        const opening = button.getAttribute("aria-expanded") !== "true";
-        buttons.forEach((other) => other !== button && set(other, false));
-        set(button, opening);
-      }),
-    );
-  });
+      buttons.forEach((button) =>
+        button.addEventListener("click", () => {
+          const opening = button.getAttribute("aria-expanded") !== "true";
+          buttons.forEach((other) => other !== button && set(other, false));
+          set(button, opening);
+        }),
+      );
+    });
+  }
+
+  document.addEventListener("astro:page-load", bindAccordions);
 </script>

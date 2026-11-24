@@ -10,7 +10,8 @@ import { mdxComponents } from "@/components/mdx";
 import Button from "@/components/ui/Button.astro";
 import Container from "@/components/ui/Container.astro";
 import { careersPage } from "@/config/pages/careers";
-import { siteConfig } from "@/config/site";
+import { getSiteConfig } from "@/config/site";
+import { resolveLocale } from "@/i18n";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { formatDate, getJobs, type Job } from "@/lib/content";
 import { getImage } from "@/lib/images";
@@ -24,6 +25,7 @@ interface Props {
   job: Job;
 }
 const { job } = Astro.props;
+const siteConfig = getSiteConfig(resolveLocale(Astro.currentLocale));
 const meta = job.data;
 const { Content } = await render(job);
 const t = careersPage.job;
@@ -42,7 +44,7 @@ const jsonLd = {
   employmentType: "FULL_TIME",
   hiringOrganization: { "@type": "Organization", name: siteConfig.name, sameAs: siteConfig.url },
   ...(remote
-    ? { jobLocationType: "TELECOMMUTE", applicantLocationRequirements: [{ "@type": "Country", name: "US" }, { "@type": "Country", name: "EU" }] }
+    ? { jobLocationType: "TELECOMMUTE", applicantLocationRequirements: [{ "@type": "Country", name: "NL" }, { "@type": "Country", name: "EU" }] }
     : { jobLocation: { "@type": "Place", address: { "@type": "PostalAddress", addressLocality: meta.location } } }),
 };
 const tags = [meta.team, meta.location, meta.type, meta.salaryShort, `${t.postedLabel} ${formatDate(meta.posted)}`];
@@ -76,7 +78,7 @@ const tags = [meta.team, meta.location, meta.type, meta.salaryShort, `${t.posted
       <div>
         <div class="hero-reveal border-b border-dashed border-line-strong pb-8">
           <h1 class="font-heading-flex text-[32px] leading-10 font-medium tracking-[-0.03em] text-ink lg:text-[40px] lg:leading-[44px]">{meta.title}</h1>
-          <p class="mt-2 text-base text-muted">{meta.location.includes("Remote") ? "Remote in US or EU unless noted" : meta.location}</p>
+          <p class="mt-2 text-base text-muted">{meta.location.includes("Remote") ? "Remote in NL/EU unless noted" : meta.location}</p>
           <ul class="mt-5 flex flex-wrap gap-2">
             {tags.map((tag) => <li class="rounded-full bg-surface-muted px-3 py-1 text-sm text-ink">{tag}</li>)}
           </ul>

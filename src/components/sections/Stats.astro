@@ -3,7 +3,7 @@ import LineIcon from "@/components/icons/LineIcon.astro";
 import type { LineIconName } from "@/components/icons/line-icons";
 import Container from "@/components/ui/Container.astro";
 import SectionHeading from "@/components/ui/SectionHeading.astro";
-import { siteConfig } from "@/config/site";
+import { getSiteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
 
 type StatItem = { icon: LineIconName; value: string; label: string };
@@ -11,10 +11,11 @@ interface Props {
   content: { eyebrow?: string; title?: string; accent?: string; items: readonly StatItem[] };
 }
 const { content } = Astro.props;
+const siteConfig = getSiteConfig();
 const [a, b, c, d] = content.items;
 
 /** Every cell draws its own right + bottom line; the grid draws the top + left line. */
-const cell = "relative h-[223px] border-r border-b border-[#ededed] bg-surface p-6 lg:h-[264px]";
+const cell = "relative h-[223px] border-r border-b border-line bg-surface p-6 lg:h-[264px]";
 const stats = [
   { item: a, class: "max-sm:h-[205px] lg:col-span-3" },
   { item: b, class: "max-sm:h-[205px] lg:col-span-1" },
@@ -32,14 +33,15 @@ const stats = [
         </div>
       )
     }
-    <div data-stagger data-gap="0.1" class="grid grid-cols-1 border-t border-l border-[#ededed] sm:grid-cols-2 lg:grid-cols-[294fr_98fr_393fr_61fr_294fr]">
-      <!-- Brand mark drawn in light grey, using the logo file as a mask (follows your logo) -->
+    <div data-stagger data-gap="0.1" class="grid grid-cols-1 border-t border-l border-line sm:grid-cols-2 lg:grid-cols-[294fr_98fr_393fr_61fr_294fr]">
+      <!-- Brand layers mark -->
       <div data-stagger-item class={cn(cell, "flex items-center justify-center lg:col-span-1")}>
-        <span
+        <img
+          src={siteConfig.brand.mark}
+          alt=""
           aria-hidden="true"
-          class="block aspect-[177/185] w-[150px] bg-[#f1f1f1] transition-colors duration-500 [mask-position:center] [mask-repeat:no-repeat] [mask-size:contain] hover:bg-brand-soft lg:w-[196px]"
-          style={`mask-image: url(${siteConfig.brand.markAlt})`}
-        ></span>
+          class="h-auto w-[88px] opacity-90 transition-transform duration-500 hover:scale-105 lg:w-[120px]"
+        />
       </div>
       {
         stats.map(({ item, class: extra }) => (

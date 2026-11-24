@@ -1,387 +1,492 @@
 /**
- * Home page content.
- * ------------------------------------------------------------
- * Every text, link and image on the home page comes from this file.
- * Edit the values here – you do not need to touch the components.
- *
- * Numbers, names and quotes below are SAMPLE content for the fictional
- * "Vaxnori AI" brand. Replace them with your own before you launch.
+ * Home page content (locale-aware) for GeoKade.
  */
 import type { LineIconName } from "@/components/icons/line-icons";
-import { siteConfig } from "@/config/site";
+import { getSiteConfig } from "@/config/site";
+import { defaultLocale, localePath, type Locale } from "@/i18n";
 
-export const homePage = {
-  meta: {
-    title: undefined, // undefined = use the default site title (src/lib/seo.ts)
-    description: siteConfig.description,
-  },
+function buildHome(locale: Locale) {
+  const site = getSiteConfig(locale);
+  const p = (path: string) => localePath(locale, path);
+  const nl = locale === "nl";
 
-  hero: {
-    /** Background of the product preview (exported from Figma at 2x). */
-    background: "/images/home/hero-background.webp",
-    title: "From idea to launch,",
-    accent: "handled for you",
-    description:
-      "It takes care of everything from your brand identity and domain to business paperwork and website launch,",
-    descriptionHighlight: "built into every important step",
-    primaryCta: { label: "Try it for Free", href: "/pricing" },
-    secondaryCta: { label: "Watch a Demo", href: "/how-it-works" },
-    /** The animated product preview under the hero. */
-    mockup: {
-      label: "Product preview: an AI agent managing a launch checklist",
-      client: { label: "Client:", name: "Mobain", date: "3 Feb" },
-      agent: { name: siteConfig.name, subtitle: "Managing launch progress", tags: ["Legal", "Domain", "Growth"] },
-      tasks: [
-        { title: "Task: Launch website", subtitle: "Assigned to agent + founder", tags: ["CMS", "SEO", "Domain"] },
-        { title: "Task: Outreach", subtitle: "Assigned to agent" },
+  return {
+    meta: {
+      title: undefined as string | undefined,
+      description: site.description,
+    },
+
+    hero: {
+      background: "/images/home/hero-background.webp",
+      title: nl ? "Van geospatial data naar" : "From geospatial data to",
+      accent: nl ? "bruikbare intelligentie" : "actionable intelligence",
+      description: nl
+        ? "Ontdek, visualiseer en analyseer geografische informatie in één omgeving —"
+        : "Discover, map, and analyze geographic information in one environment —",
+      descriptionHighlight: nl
+        ? "gebouwd voor beslissingen in de echte wereld."
+        : "built for real-world decisions.",
+      primaryCta: { label: nl ? "Open platform" : "Open platform", href: site.platformUrl },
+      secondaryCta: { label: nl ? "Hoe het werkt" : "How it works", href: p("how-it-works") },
+      mockup: {
+        label: nl
+          ? "Productvoorbeeld: geospatial workspace met lagen en analyse"
+          : "Product preview: geospatial workspace with layers and analysis",
+        client: { label: nl ? "Werkruimte:" : "Workspace:", name: "Amsterdam", date: "PDOK" },
+        agent: {
+          name: site.name,
+          subtitle: nl ? "Ruimtelijke intelligentie" : "Spatial intelligence",
+          tags: nl ? ["Data", "Kaart", "Analyse"] : ["Data", "Map", "Analyze"],
+        },
+        tasks: [
+          {
+            title: nl ? "Taak: Ontdek datasets" : "Task: Discover datasets",
+            subtitle: nl ? "Open data + enterprise bronnen" : "Open data + enterprise sources",
+            tags: ["PDOK", "BAG", "API"],
+          },
+          {
+            title: nl ? "Taak: Analyseer" : "Task: Analyze",
+            subtitle: nl ? "Nabijheid, geschiktheid, filters" : "Proximity, suitability, filters",
+            tags: nl ? ["AI", "Ruimtelijk"] : ["AI", "Spatial"],
+          },
+        ],
+        detailsLabel: nl ? "Taakdetails" : "Task Details",
+        checklistTitle: nl ? "Workspace checklist" : "Workspace checklist",
+        rows: nl
+          ? ["Datasets", "Lagen", "Analyse", "Delen", "Verhaal"]
+          : ["Datasets", "Layers", "Analyze", "Share", "Story"],
+        steps: [
+          {
+            label: nl ? "Ontdek" : "Discover",
+            progress: 18,
+            highlight: "agent" as const,
+            bars: [20, 25, 0, 40, 0],
+            toast: {
+              title: nl ? "Catalogus zoeken…" : "Searching catalog…",
+              subtitle: nl ? "Nederlandse open data" : "Dutch open data",
+            },
+          },
+          {
+            label: nl ? "Kaart" : "Map",
+            progress: 51,
+            highlight: "launch" as const,
+            bars: [60, 70, 25, 100, 0],
+            toast: {
+              title: nl ? "Lagen laden…" : "Loading layers…",
+              subtitle: "BAG · PDOK",
+            },
+          },
+          {
+            label: nl ? "Analyse" : "Analyze",
+            progress: 82,
+            highlight: "outreach" as const,
+            bars: [90, 100, 70, 100, 45],
+            toast: {
+              title: nl ? "Ruimtelijke query…" : "Spatial query…",
+              subtitle: nl ? "Buffer 500 m" : "Buffer 500 m",
+            },
+          },
+          {
+            label: nl ? "Inzicht" : "Insight",
+            progress: 100,
+            highlight: "none" as const,
+            bars: [100, 100, 100, 100, 100],
+            toast: {
+              title: nl ? "Klaar" : "Ready",
+              subtitle: nl ? "Kaartverhaal gedeeld" : "Map story shared",
+            },
+            live: true,
+          },
+        ],
+        statusLabels: {
+          todo: nl ? "Te doen" : "To do",
+          progress: nl ? "Bezig" : "In progress",
+          done: nl ? "Klaar" : "Done",
+        },
+      },
+    },
+
+    logos: {
+      title: nl
+        ? "Gebouwd voor organisaties die locatie serieus nemen"
+        : "Built for organisations that take location seriously",
+      items: [
+        { name: "Municipality", shape: "circle" },
+        { name: "University", shape: "square" },
+        { name: "NGO", shape: "triangle" },
+        { name: "Utility", shape: "spark" },
+        { name: "Research", shape: "ring" },
+        { name: "Infra", shape: "circle" },
+        { name: "Enterprise", shape: "diamond" },
+      ] as const,
+    },
+
+    product: {
+      eyebrow: nl ? "Platform" : "Product",
+      title: nl ? "Eén omgeving voor" : "One environment to",
+      accent: nl ? "ontdekken, kaarten en begrijpen." : "discover, map, and understand.",
+      tabs: [
+        {
+          id: "team",
+          label: nl ? "Ontdekken" : "Discover",
+          title: nl ? "Vind de juiste geografische data sneller" : "Find the right geographic data faster",
+          description: nl
+            ? "Doorzoek catalogs, open data en enterprise bronnen zonder tussen tientallen portalen te springen."
+            : "Search catalogs, open data, and enterprise sources without jumping between portals.",
+          points: nl
+            ? ["Nederlandse open data zoals PDOK en BAG.", "Eigen datasets naast publieke bronnen."]
+            : ["Dutch open data such as PDOK and BAG.", "Your datasets alongside public sources."],
+          visual: {
+            type: "catalog" as const,
+            title: nl ? "Catalogus" : "Catalog",
+            search: nl ? "Zoek datasets…" : "Search datasets…",
+            layersLabel: nl ? "Lagen" : "Layers",
+            mapLabel: nl ? "Kaartvoorbeeld" : "Map preview",
+            mapImage: "/images/home/map-3d-city.png",
+            mapAlt: nl ? "3D kaartvoorbeeld met gebouwen en actieve lagen" : "3D map preview with buildings and active layers",
+            mapCredit: "",
+            datasets: [
+              { name: "BAG — Pand", source: "PDOK", active: true },
+              { name: nl ? "Bestuurlijke grenzen" : "Admin boundaries", source: "PDOK", active: true },
+              { name: nl ? "Luchtfoto RGB" : "Aerial RGB", source: "PDOK", active: false },
+              { name: nl ? "Eigen: netwerk assets" : "Own: network assets", source: nl ? "Workspace" : "Workspace", active: false },
+            ],
+          },
+        },
+        {
+          id: "workflows",
+          label: nl ? "Analyseren" : "Analyze",
+          title: nl ? "Ruimtelijke vragen, heldere antwoorden" : "Spatial questions, clear answers",
+          description: nl
+            ? "Buffers, snijpunten, filters en geschiktheidsanalyses — met resultaten die je op de kaart ziet."
+            : "Buffers, intersections, filters, and suitability — with results you can see on the map.",
+          points: nl
+            ? ["Goedkeuren of bijsturen vóór je deelt.", "Herbruikbare workflows voor terugkerende vragen."]
+            : ["Approve or adjust before you share.", "Reusable workflows for recurring questions."],
+          visual: {
+            type: "workflow" as const,
+            title: nl ? "Locatiegeschiktheid" : "Site suitability",
+            steps: [
+              { icon: "globe" as LineIconName, label: nl ? "Kies datasets" : "Select datasets", meta: nl ? "Bron" : "Source" },
+              { icon: "sparkle" as LineIconName, label: nl ? "Ruimtelijke query" : "Spatial query", meta: nl ? "Analyse" : "Analyze" },
+              { icon: "check" as LineIconName, label: nl ? "Review resultaten" : "Review results", meta: nl ? "Check" : "Review" },
+              { icon: "bolt" as LineIconName, label: nl ? "Deel kaartinzicht" : "Share map insight", meta: nl ? "Klaar" : "Done" },
+            ],
+          },
+        },
+        {
+          id: "canvas",
+          label: nl ? "Begrijpen" : "Understand",
+          title: nl ? "Kaart, data en context op één canvas" : "Map, data, and context on one canvas",
+          description: nl
+            ? "Combineer lagen, verhalen en analyses zodat teams niet alleen zien waar iets is — maar waarom het ertoe doet."
+            : "Combine layers, stories, and analysis so teams see not only where something is — but why it matters.",
+          points: nl
+            ? ["Deelbare kaartverhalen voor stakeholders.", "Samenwerken zonder GIS-specialist voor elke vraag."]
+            : ["Shareable map stories for stakeholders.", "Collaborate without a GIS specialist for every question."],
+          visual: {
+            type: "canvas" as const,
+            center: site.name,
+            nodes: [
+              { icon: "globe" as LineIconName, label: nl ? "Data" : "Data" },
+              { icon: "chart" as LineIconName, label: nl ? "Kaart" : "Map" },
+              { icon: "sparkle" as LineIconName, label: nl ? "AI" : "AI" },
+              { icon: "list" as LineIconName, label: nl ? "Analyse" : "Analyze" },
+              { icon: "users" as LineIconName, label: nl ? "Teams" : "Teams" },
+              { icon: "building" as LineIconName, label: nl ? "Governance" : "Governance" },
+              { icon: "doc" as LineIconName, label: nl ? "Verhalen" : "Stories" },
+              { icon: "puzzle" as LineIconName, label: nl ? "Integraties" : "Integrations" },
+            ],
+          },
+        },
       ],
-      detailsLabel: "Task Details",
-      checklistTitle: "Launch To-Do's",
-      /**
-       * The preview plays these steps in a loop (about 3 seconds each), like the live site.
-       * `bars` = progress per checklist row (0–100). `highlight` = which card glows.
-       */
-      rows: ["Website", "Brand kit", "LLC filing", "Domain", "Outreach"],
+    },
+
+    stats: {
+      eyebrow: nl ? "Focus" : "Focus",
+      title: nl ? "Gebouwd voor" : "Built for",
+      accent: nl ? "Europese geospatial teams." : "European geospatial teams.",
+      items: [
+        {
+          icon: "building" as LineIconName,
+          value: nl ? "Publiek" : "Public",
+          label: nl
+            ? "Gemeenten, provincies, agentschappen én organisaties."
+            : "Municipalities, agencies, and public organisations.",
+        },
+        {
+          icon: "users" as LineIconName,
+          value: nl ? "Onderwijs" : "Campus",
+          label: nl
+            ? "Universiteiten, hogescholen en onderzoeksinstituten."
+            : "Universities, colleges, and research institutes.",
+        },
+        {
+          icon: "sparkle" as LineIconName,
+          value: "AI",
+          label: nl ? "Ruimtelijke intelligentie gekoppeld aan echte data." : "Spatial intelligence grounded in real datasets.",
+        },
+        {
+          icon: "bank" as LineIconName,
+          value: nl ? "Enterprise" : "Enterprise",
+          label: nl
+            ? "Ook private sector: governance en private deployment."
+            : "Private sector too: governance and private deployment.",
+        },
+      ],
+    },
+
+    howItWorks: {
+      eyebrow: nl ? "Hoe het werkt" : "How it works",
+      title: nl ? "Van data naar" : "From data to",
+      accent: nl ? "besluit." : "decision.",
       steps: [
         {
-          label: "Kickoff",
-          progress: 18,
-          highlight: "agent",
-          bars: [20, 25, 0, 40, 0],
-          toast: { title: "Checking domain...", subtitle: "mobain.co" },
+          title: nl ? "Ontdek bronnen" : "Discover sources",
+          description: nl
+            ? "Zoek in open en eigen datasets. GeoKade helpt je de juiste lagen te vinden."
+            : "Search open and private datasets. GeoKade helps you find the right layers.",
+          card: {
+            type: "idea" as const,
+            label: nl ? "Vraag" : "Question",
+            text: nl
+              ? "Welke panden liggen in een overstromingsrisicogebied?"
+              : "Which buildings sit inside a flood-risk zone?",
+            drafted: nl ? "3 datasets voorgesteld" : "3 datasets suggested",
+            tasks: [
+              { icon: "globe" as LineIconName, label: nl ? "BAG panden" : "BAG buildings", meta: "01" },
+              { icon: "chart" as LineIconName, label: nl ? "Risicokaart" : "Risk layer", meta: "02" },
+              { icon: "sparkle" as LineIconName, label: nl ? "Intersectie" : "Intersection", meta: "03" },
+            ],
+          },
         },
         {
-          label: "Build",
-          progress: 51,
-          highlight: "launch",
-          bars: [60, 70, 25, 100, 0],
-          toast: { title: "Registering...", subtitle: "Mobain.co" },
+          title: nl ? "Bekijk op de kaart" : "See it on the map",
+          description: nl
+            ? "Combineer lagen, filter objecten en inspecteer attributen in context."
+            : "Combine layers, filter features, and inspect attributes in context.",
+          card: {
+            type: "approve" as const,
+            title: nl ? "Laag: overstromingszone" : "Layer: flood zone",
+            status: nl ? "Klaar om te combineren" : "Ready to combine",
+            approvedLabel: nl ? "Toegevoegd" : "Added",
+            rows: [
+              [nl ? "Bron" : "Source", "PDOK"],
+              [nl ? "Type" : "Type", "Polygon"],
+              [nl ? "CRS" : "CRS", "EPSG:28992"],
+            ] as [string, string][],
+            hold: nl ? "Wacht" : "Hold",
+            approve: nl ? "Toevoegen" : "Add",
+          },
         },
         {
-          label: "Outreach",
-          progress: 82,
-          highlight: "outreach",
-          bars: [90, 100, 70, 100, 45],
-          toast: { title: "Filing LLC...", subtitle: "Delaware, US" },
+          title: nl ? "Deel het inzicht" : "Share the insight",
+          description: nl
+            ? "Maak een kaartverhaal of deel een workspace met je team."
+            : "Create a map story or share a workspace with your team.",
+          card: {
+            type: "activity" as const,
+            title: nl ? "Activiteit" : "Activity",
+            shippedLabel: nl ? "gedeeld" : "shared",
+            items: [
+              { icon: "globe" as LineIconName, label: nl ? "Lagen geladen" : "Layers loaded", meta: "9:00" },
+              { icon: "sparkle" as LineIconName, label: nl ? "Analyse klaar" : "Analysis ready", meta: "9:12" },
+              { icon: "users" as LineIconName, label: nl ? "Team genodigd" : "Team invited", meta: "9:28" },
+            ],
+            progress: {
+              icon: "doc" as LineIconName,
+              label: nl ? "Kaartverhaal" : "Map story",
+              value: 75,
+              liveLabel: nl ? "Gepubliceerd" : "Published",
+            },
+          },
         },
-        {
-          label: "Live",
-          progress: 100,
-          highlight: "none",
-          bars: [100, 100, 100, 100, 100],
-          toast: { title: "Launched", subtitle: "mobain.co is live" },
-          live: true,
-        },
-      ] satisfies { label: string; progress: number; highlight: "agent" | "launch" | "outreach" | "none"; bars: number[]; toast: { title: string; subtitle: string }; live?: boolean }[],
-      statusLabels: { todo: "To do", progress: "In progress", done: "Done" },
+      ],
     },
-  },
 
-  logos: {
-    title: "Vaxnori AI is trusted by teams like these",
-    /** Placeholder logos. Replace with SVG files of your real customers (with permission). */
-    items: [
-      { name: "Acme", shape: "circle" },
-      { name: "Logoipsum", shape: "square" },
-      { name: "Northwind", shape: "triangle" },
-      { name: "Lumen", shape: "spark" },
-      { name: "Quanta", shape: "ring" },
-      { name: "Orbit", shape: "circle" },
-      { name: "Kite", shape: "diamond" },
-    ] as const,
-  },
+    testimonial: {
+      quote: nl
+        ? "GeoKade helpt onze afdelingen geografische data sneller te vinden en te begrijpen — zonder voor elke vraag een GIS-specialist nodig te hebben."
+        : "GeoKade helps our departments find and understand geographic data faster — without needing a GIS specialist for every question.",
+      name: nl ? "Gemeentelijk innovatieteam" : "Municipal innovation team",
+      role: nl ? "Lokale overheid · Nederland" : "Local government · Netherlands",
+      image: { src: "/images/home/testimonial-portrait.webp", alt: nl ? "Teamportret" : "Team portrait" },
+      background: "/images/patterns/tiles-orange.webp",
+    },
 
-  product: {
-    eyebrow: "Product",
-    title: "From one sentence to a",
-    accent: "running company.",
-    tabs: [
+    features: [
       {
-        id: "team",
-        label: "Your AI team",
-        title: "Hire a department in an afternoon",
-        description:
-          "Sales, finance, marketing, design — each one a named agent with its own remit, tools and budget. You brief them the way you'd brief a person.",
-        points: ["Start with one agent and add roles as the work grows.", "Agent keeps its own memory of your customers"],
+        eyebrow: nl ? "01 — Cloud" : "01 — Cloud",
+        title: nl ? "GeoKade Cloud" : "GeoKade Cloud",
+        accent: nl ? "— hosted geospatial intelligence." : "— hosted geospatial intelligence.",
+        description: nl
+          ? "Een hosted platform voor gemeenten, organisaties, universiteiten en teams die datasets willen ontdekken, kaarten bouwen en samenwerken — zonder eigen GIS-infrastructuur te beheren."
+          : "A hosted platform for municipalities, organisations, universities, and teams that need to discover datasets, build maps, and collaborate — without running their own GIS infrastructure.",
         visual: {
-          type: "image",
-          src: "/images/home/product-workspace.webp",
-          width: 1240,
-          height: 803,
-          alt: "Workspace showing an AI agent organising sales, finance, marketing and design teams",
-        },
-      },
-      {
-        id: "workflows",
-        label: "Workflows",
-        title: "Turn routine work into repeatable flows",
-        description:
-          "Chain agents together: a trigger starts the work, agents do it, and you approve anything that matters. Every step is logged.",
-        points: ["Approve, hold or edit any step before it runs.", "Reuse a flow for every new customer or launch."],
-        visual: {
-          type: "workflow",
-          title: "New lead flow",
-          steps: [
-            { icon: "mail", label: "New lead in your inbox", meta: "Trigger" },
-            { icon: "sparkle", label: "Sales agent drafts a reply", meta: "Agent" },
-            { icon: "check", label: "You approve the draft", meta: "Approval" },
-            { icon: "bolt", label: "Reply sent, CRM updated", meta: "Done" },
-          ] satisfies { icon: LineIconName; label: string; meta: string }[],
-        },
-      },
-      {
-        id: "canvas",
-        label: "The Canvas",
-        title: "See the whole company on one canvas",
-        description:
-          "Every department sits on one map. Open a team to see its agents, tasks and shared context — and how work moves between them.",
-        points: ["Spot blocked work at a glance.", "Shared context keeps every agent on brand."],
-        visual: {
-          type: "canvas",
-          center: siteConfig.name,
-          nodes: [
-            { icon: "chart", label: "Sales" },
-            { icon: "sparkle", label: "Design" },
-            { icon: "code", label: "Engineering" },
-            { icon: "megaphone", label: "Marketing" },
-            { icon: "bank", label: "Finance" },
-            { icon: "scale", label: "Legal" },
-            { icon: "list", label: "Operations" },
-            { icon: "headset", label: "Support" },
-          ] satisfies { icon: LineIconName; label: string }[],
-        },
-      },
-    ],
-  },
-
-  stats: {
-    eyebrow: "Stats",
-    title: "The numbers behind",
-    accent: "building smarter.",
-    /** Example numbers – replace with your own data. */
-    items: [
-      { icon: "globe", value: "3 days", label: "Median time from first sentence to a live business." },
-      { icon: "clock", value: "11 hrs", label: "Admin hours returned every week." },
-      { icon: "list", value: "94%", label: "Tasks finished without a follow-up question." },
-      { icon: "bank", value: "$2,140", label: "Average monthly spend replaced per business." },
-    ] satisfies { icon: LineIconName; value: string; label: string }[],
-  },
-
-  howItWorks: {
-    eyebrow: "How it works",
-    title: "From one sentence to a",
-    accent: "running company.",
-    steps: [
-      {
-        title: "Describe the idea",
-        description: "One paragraph is enough. Vaxnori turns it into a roadmap of concrete tasks.",
-        card: {
-          type: "idea",
-          label: "Your idea",
-          text: "A premium cookie and spice brand for New York City",
-          drafted: "12 tasks drafted",
+          type: "launch" as const,
+          checklistTitle: nl ? "Cloud capabilities" : "Cloud capabilities",
           tasks: [
-            { icon: "sparkle", label: "Branding identity", meta: "Task 01" },
-            { icon: "globe", label: "Buy domain", meta: "Task 02" },
-            { icon: "building", label: "File the LLC", meta: "Task 03" },
-          ] satisfies { icon: LineIconName; label: string; meta: string }[],
+            { label: nl ? "Dataset discovery" : "Dataset discovery", status: nl ? "Beschikbaar" : "Available", tone: "done" as const },
+            { label: nl ? "Interactieve kaarten" : "Interactive maps", status: nl ? "Beschikbaar" : "Available", tone: "done" as const },
+            { label: nl ? "AI-ondersteunde exploratie" : "AI-assisted exploration", status: nl ? "In ontwikkeling" : "In progress", tone: "progress" as const },
+            { label: nl ? "Team workspaces" : "Team workspaces", status: nl ? "Gepland" : "Queued", tone: "queued" as const },
+          ],
+          queuedLabel: nl ? "Gepland" : "Queued",
+          identityTitle: nl ? "Focus" : "Focus",
+          brand: "GeoKade",
+          voice: nl ? ["Duidelijk · feitelijk", "Geen hype"] : ["Clear · factual", "No hype"],
+          colors: ["#ff4820", "#0f172a", "#e8e1d6", "#f7f5f1"],
+        },
+        image: {
+          src: "/images/home/feature-launch.webp",
+          alt: nl ? "Overzicht van GeoKade Cloud mogelijkheden" : "Overview of GeoKade Cloud capabilities",
         },
       },
       {
-        title: "Approve the plan",
-        description: "Every task shows what it will do and what it costs before it runs.",
-        card: {
-          type: "approve",
-          title: "Register mobain.co",
-          status: "Needs approval",
-          approvedLabel: "Approved",
-          rows: [
-            ["Cost", "$14.00/yr"],
-            ["Registrar", "Your registrar"],
-            ["Reversible", "No"],
-          ] as [string, string][],
-          hold: "Hold",
-          approve: "Approve",
+        eyebrow: nl ? "02 — Enterprise" : "02 — Enterprise",
+        title: nl ? "GeoKade Enterprise" : "GeoKade Enterprise",
+        accent: nl ? "— controle, governance, schaal." : "— control, governance, scale.",
+        description: nl
+          ? "Voor publieke én private organisaties die private deployment, IAM, datasoevereiniteit en integratie met bestaande GIS-systemen nodig hebben — van overheid tot enterprise."
+          : "For public and private organisations that need private deployment, IAM, data residency, and integration with existing GIS systems — from government to enterprise.",
+        visual: {
+          type: "grow" as const,
+          funnel: [
+            { label: nl ? "Bronnen verbonden" : "Sources connected", value: 24 },
+            { label: nl ? "Workspaces" : "Workspaces", value: 8 },
+            { label: nl ? "Rollen & policies" : "Roles & policies", value: 12 },
+            { label: nl ? "Gedeelde inzichten" : "Shared insights", value: 36 },
+          ],
+          draftLabel: nl ? "Enterprise brief" : "Enterprise brief",
+          draft: nl
+            ? "\"Private deployment, koppeling met bestaande identity provider, data blijft binnen onze omgeving.\""
+            : "\"Private deployment, connect to our identity provider, data stays in our environment.\"",
+          hold: nl ? "Wacht" : "Hold",
+          approve: nl ? "Plan gesprek" : "Book call",
+          sent: nl ? "Verzonden ✓" : "Sent ✓",
+        },
+        image: {
+          src: "/images/home/feature-grow.webp",
+          alt: nl ? "Enterprise deployment en governance" : "Enterprise deployment and governance",
         },
       },
       {
-        title: "Watch it ship",
-        description: "Agents execute in the background and report back to you.",
-        card: {
-          type: "activity",
-          title: "Activity",
-          /** Counter label: "{n} shipped". */
-          shippedLabel: "shipped",
-          items: [
-            { icon: "sparkle", label: "Branding identity", meta: "9:00" },
-            { icon: "globe", label: "Domain secured", meta: "9:12" },
-            { icon: "building", label: "LLC filed in NY", meta: "9:28" },
-          ] satisfies { icon: LineIconName; label: string; meta: string }[],
-          progress: { icon: "globe" as LineIconName, label: "Website in progress", value: 75, liveLabel: "Website live" },
+        eyebrow: nl ? "03 — Intelligence" : "03 — Intelligence",
+        title: nl ? "GeoKade Intelligence" : "GeoKade Intelligence",
+        accent: nl ? "— vraag het aan je ruimtelijke data." : "— ask your spatial data.",
+        description: nl
+          ? "Natuurlijke taal en ruimtelijke analyse, gekoppeld aan gezaghebbende datasets — roadmap, geen marketingbelofte zonder grond."
+          : "Natural language and spatial analysis grounded in authoritative datasets — a roadmap, not an ungrounded marketing claim.",
+        visual: {
+          type: "run" as const,
+          recurringTitle: nl ? "Vragen" : "Questions",
+          recurringNote: nl ? "Voorbeelden" : "Examples",
+          recurring: [
+            { day: "Q1", label: nl ? "Dichtheid per buurt" : "Density by neighbourhood", done: nl ? "Demo" : "Demo" },
+            { day: "Q2", label: nl ? "Nabijheid voorzieningen" : "Facility proximity", done: "" },
+          ],
+          queuedLabel: nl ? "Roadmap" : "Roadmap",
+          digestTitle: nl ? "Inzicht" : "Insight",
+          metrics: [
+            { value: 12, decimals: 0, suffix: "", label: nl ? "Lagen" : "Layers" },
+            { value: 4.2, decimals: 1, suffix: "k", label: nl ? "Objecten" : "Features" },
+            { value: 3, decimals: 0, suffix: "", label: nl ? "Analyses" : "Analyses" },
+          ],
+          bars: [
+            [36, 58],
+            [47, 68],
+            [55, 68],
+            [64, 97],
+            [73, 88],
+            [74, 83],
+            [64, 47],
+          ],
+        },
+        image: {
+          src: "/images/home/feature-run.webp",
+          alt: nl ? "Voorbeelden van ruimtelijke vragen" : "Examples of spatial questions",
         },
       },
     ],
-  },
 
-  /** Sample testimonial with an AI-generated portrait. Replace with a real customer quote. */
-  testimonial: {
-    quote:
-      "Vaxnori AI helped me turn an idea into a real business without getting buried in endless setup tasks. It gave me a clear roadmap, handled the execution, and kept me involved in every important decision.",
-    name: "Alex Morgan",
-    role: "Founder",
-    image: { src: "/images/home/testimonial-portrait.webp", alt: "Portrait of Alex Morgan" },
-    background: "/images/patterns/tiles-orange.webp",
-  },
-
-  features: [
-    {
-      eyebrow: "01 — Launch",
-      title: "A brand, a domain, and an LLC",
-      accent: "before your coffee cools.",
-      description:
-        "Vaxnori reads your idea and drafts positioning, brand voice, and a visual identity. It shortlists domains, incorporates the LLC, and asks for your sign-off at every irreversible step.",
-      visual: {
-        type: "launch",
-        checklistTitle: "Launch checklist",
-        tasks: [
-          { label: "Positioning & brand voice", status: "Drafted", tone: "todo" },
-          { label: "Visual identity", status: "Done", tone: "done" },
-          { label: "Buy mobain.co · $14/yr", status: "Needs Sign off", tone: "progress" },
-          { label: "File Delaware LLC", status: "Queued", tone: "queued" },
-        ],
-        queuedLabel: "Queued",
-        identityTitle: "Identity",
-        brand: "Mobain",
-        voice: ["Warm · plain-spoken", "Never cute"],
-        colors: ["#ff4820", "#ffcf00", "#e8e1d6", "#f7f5f1"],
-      },
-      image: {
-        src: "/images/home/feature-launch.webp",
-        alt: "Launch checklist with brand voice, visual identity, domain and LLC tasks, and a brand colour palette",
-      },
+    cta: {
+      title: nl ? "Klaar om geospatial data" : "Ready to turn geospatial data",
+      accent: nl ? "werkbaar te maken?" : "into decisions?",
+      description: nl
+        ? "Verken GeoKade Cloud of plan een gesprek over Enterprise-deployment."
+        : "Explore GeoKade Cloud or book a conversation about Enterprise deployment.",
+      secondary: { label: nl ? "Contact" : "Contact us", href: p("contact") },
+      primary: { label: nl ? "Open platform" : "Open platform", href: site.platformUrl },
     },
-    {
-      eyebrow: "02 — Grow",
-      title: "It finds your first hundred",
-      accent: "customers by name.",
-      description:
-        "Market research, prospect lists, and outreach written in your brand voice — coordinated so the story stays consistent from cold email to landing page. You review before anything sends.",
-      visual: {
-        type: "grow",
-        funnel: [
-          { label: "Buyers researched", value: 312 },
-          { label: "Fit the brand", value: 104 },
-          { label: "Emailed this week", value: 42 },
-          { label: "Calls booked", value: 3 },
-        ],
-        draftLabel: "Draft · In your brand voice",
-        draft: "\"Steve — you stock small-batch bakers. We make one cookie, very well. Six samples, no invoice?\"",
-        hold: "Hold",
-        approve: "Approve",
-        sent: "Sent ✓",
-      },
-      image: {
-        src: "/images/home/feature-grow.webp",
-        alt: "Outreach funnel: 312 buyers researched, 104 fit the brand, 42 emailed, 3 calls booked, with a draft email waiting for approval",
-      },
+
+    integrations: {
+      eyebrow: nl ? "Bronnen" : "Sources",
+      title: nl ? "Werkt met de data" : "Works with the data",
+      accent: nl ? "die je al hebt — en open data." : "you already have — and open data.",
+      items: [
+        { icon: "globe" as LineIconName, name: "PDOK", description: nl ? "Nederlandse open geo-data" : "Dutch open geo-data", from: "#fd7a77", to: "#fc413d" },
+        { icon: "building" as LineIconName, name: "BAG", description: nl ? "Adressen en gebouwen" : "Addresses and buildings", from: "#8a84ff", to: "#635bff" },
+        { icon: "puzzle" as LineIconName, name: "APIs", description: nl ? "Externe geospatial services" : "External geospatial services", from: "#f39a9a", to: "#ef7878" },
+        { icon: "doc" as LineIconName, name: "Catalogs", description: nl ? "Data discovery" : "Data discovery", from: "#6cd5f4", to: "#36c5f0" },
+        { icon: "chart" as LineIconName, name: "GIS stacks", description: nl ? "Bestaande GIS-integraties" : "Existing GIS integrations", from: "#333333", to: "#000000" },
+        { icon: "users" as LineIconName, name: "Teams", description: nl ? "Samenwerken & delen" : "Collaborate & share", from: "#95bf46", to: "#5e8e3e" },
+        { icon: "bank" as LineIconName, name: "Enterprise", description: nl ? "IAM & governance" : "IAM & governance", from: "#46ac38", to: "#2ca01c" },
+        { icon: "sparkle" as LineIconName, name: "AI", description: nl ? "Ruimtelijke assistentie" : "Spatial assistance", from: "#71a4f7", to: "#4285f4" },
+      ],
     },
-    {
-      eyebrow: "03 — Run",
-      title: "The boring parts of every business,",
-      accent: "on a schedule.",
-      description:
-        "Support inboxes triaged, analytics summarized every Monday, invoices chased, filings reminded. Recurring work becomes recurring tasks — with a human veto on all of it.",
-      visual: {
-        type: "run",
-        recurringTitle: "Recurring",
-        recurringNote: "This week",
-        recurring: [
-          { day: "Mon", label: "Positioning & brand voice", done: "Sent" },
-          { day: "Tue", label: "Visual identity", done: "" },
-        ],
-        queuedLabel: "Queued",
-        digestTitle: "Monday digest",
-        metrics: [
-          { value: 211, decimals: 0, suffix: "", label: "Signups" },
-          { value: 9.2, decimals: 1, suffix: "k", label: "Weekly active" },
-          { value: 14, decimals: 0, suffix: "", label: "Tickets closed" },
-        ],
-        /** Pairs of bars (orange, yellow), height in % of the chart. */
-        bars: [[36, 58], [47, 68], [55, 68], [64, 97], [73, 88], [74, 83], [64, 47]],
-      },
-      image: {
-        src: "/images/home/feature-run.webp",
-        alt: "Recurring weekly tasks and a Monday digest with signups, weekly active users and closed tickets",
-      },
+
+    faq: {
+      eyebrow: "FAQ",
+      title: nl ? "Eerlijke vragen," : "Fair questions,",
+      accent: nl ? "duidelijke antwoorden." : "straight answers.",
+      cta: { label: nl ? "Contact" : "Contact us", href: p("contact") },
+      items: [
+        {
+          question: nl ? "Wat is het verschil tussen geokade.nl en geokade.nl?" : "What is the difference between geokade.nl and geokade.nl?",
+          answer: nl
+            ? "geokade.nl is de bedrijfssite. geokade.nl is het productplatform (GeoKade Cloud) waar je met data en kaarten werkt."
+            : "geokade.nl is the corporate site. geokade.nl is the product platform (GeoKade Cloud) where you work with data and maps.",
+        },
+        {
+          question: nl ? "Voor wie is GeoKade?" : "Who is GeoKade for?",
+          answer: nl
+            ? "Voor gemeenten en overheden, maar ook voor organisaties, universiteiten, onderzoeksinstituten en private enterprises die ruimtelijke data serieus gebruiken."
+            : "For municipalities and government, and equally for organisations, universities, research institutes, and private enterprises that take spatial data seriously.",
+        },
+        {
+          question: nl ? "Is GeoKade alleen voor Nederland?" : "Is GeoKade only for the Netherlands?",
+          answer: nl
+            ? "Onze eerste markt is Nederland, met Nederlandse open data. Het merk en platform zijn ontworpen als Europese technologievendor."
+            : "Our initial market is the Netherlands, with Dutch open data. The brand and platform are designed as a European technology vendor.",
+        },
+        {
+          question: nl ? "Vervangt GeoKade mijn GIS?" : "Does GeoKade replace my GIS?",
+          answer: nl
+            ? "Nee. GeoKade maakt geografische data toegankelijker voor beslissers en teams, en kan naast bestaande GIS- en dataplatformen werken."
+            : "No. GeoKade makes geographic data more accessible for decision-makers and teams, and can work alongside existing GIS and data platforms.",
+        },
+        {
+          question: nl ? "Wat is al beschikbaar versus roadmap?" : "What is available versus roadmap?",
+          answer: nl
+            ? "We claimen geen productiefuncties die er nog niet zijn. Cloud capabilities groeien; Intelligence en Enterprise-opties worden helder als roadmap of beschikbaarheid gemarkeerd."
+            : "We do not claim production features that are not there yet. Cloud capabilities grow over time; Intelligence and Enterprise options are clearly marked as roadmap or available.",
+        },
+        {
+          question: nl ? "Hoe neem ik contact op voor Enterprise?" : "How do I contact you about Enterprise?",
+          answer: nl
+            ? "Gebruik het contactformulier of mail hello@geokade.nl. We plannen graag een gesprek over deployment en integratie."
+            : "Use the contact form or email hello@geokade.nl. We are happy to schedule a conversation about deployment and integration.",
+        },
+      ],
     },
-  ],
+  };
+}
 
-  cta: {
-    title: "A smarter way to",
-    accent: "build a company",
-    description:
-      "Skip the endless research, planning, and setup. Vaxnori AI works alongside you to create your brand, organize your launch, and handle the operational details.",
-    secondary: { label: "Contact Us", href: "/contact" },
-    primary: { label: "Try it for Free", href: "/pricing" },
-  },
+export function getHomePage(locale: Locale = defaultLocale) {
+  return buildHome(locale);
+}
 
-  integrations: {
-    eyebrow: "Integrations",
-    title: "It logs into the accounts",
-    accent: "you already have.",
-    /** Generic categories – swap in your real integrations. */
-    items: [
-      { icon: "mail", name: "Email", description: "Sends and triages outreach", from: "#fd7a77", to: "#fc413d" },
-      { icon: "card", name: "Payments", description: "Invoices and chases payment", from: "#8a84ff", to: "#635bff" },
-      { icon: "globe", name: "Domains", description: "Buys and points domains", from: "#f39a9a", to: "#ef7878" },
-      { icon: "chat", name: "Team chat", description: "Asks you before it acts", from: "#6cd5f4", to: "#36c5f0" },
-      { icon: "doc", name: "Docs & wiki", description: "Keeps the company wiki current", from: "#333333", to: "#000000" },
-      { icon: "bag", name: "Storefront", description: "Lists products and fixes copy", from: "#95bf46", to: "#5e8e3e" },
-      { icon: "receipt", name: "Accounting", description: "Files receipts weekly", from: "#46ac38", to: "#2ca01c" },
-      { icon: "megaphone", name: "Ads", description: "Runs and trims campaigns", from: "#71a4f7", to: "#4285f4" },
-    ] satisfies {
-      icon: LineIconName;
-      name: string;
-      description: string;
-      /** App-icon gradient. `to` is the brand colour from the Figma integration logo, `from` a lighter tint. */
-      from: string;
-      to: string;
-    }[],
-  },
+/** @deprecated Prefer getHomePage(locale) */
+export const homePage = getHomePage(defaultLocale);
 
-  faq: {
-    eyebrow: "FAQ",
-    title: "Your fair questions,",
-    accent: "our straight answers.",
-    cta: { label: "Contact Us", href: "/contact" },
-    items: [
-      {
-        question: "Who owns what Vaxnori AI creates?",
-        answer:
-          "You do. The brand, the domain, the company, the content — everything is registered in your name. Vaxnori AI holds nothing hostage.",
-      },
-      {
-        question: "What runs without my approval?",
-        answer:
-          "Only work you mark as routine, like summaries, reminders and drafts. Anything that spends money, signs a document or contacts a customer waits for your approval.",
-      },
-      {
-        question: "Can I use it with a business I already run?",
-        answer:
-          "Yes. Connect the accounts you already use and Vaxnori AI picks up from where you are. You do not need to start a new company.",
-      },
-      {
-        question: "Where can it incorporate?",
-        answer:
-          "It depends on the registration partners you connect. You can see the supported regions in your dashboard before you start.",
-      },
-      {
-        question: "What happens if I cancel?",
-        answer:
-          "You keep everything. Your brand files, domain, company records and content stay in your name, and you can export your data at any time.",
-      },
-    ],
-  },
-} as const;
-
-export type HomePage = typeof homePage;
+export type HomePage = ReturnType<typeof getHomePage>;

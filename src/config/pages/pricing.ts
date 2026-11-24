@@ -1,10 +1,9 @@
-/** Pricing page content. Sample prices for the fictional "Vaxnori AI" brand – replace with your own. */
+/** Pricing page — indicative packaging for GeoKade. Not a binding commercial offer. */
 import type { LineIconName } from "@/components/icons/line-icons";
 
 export type Plan = {
   name: string;
   monthly: number;
-  /** Price per month when billed yearly. */
   yearly: number;
   description: string;
   features: string[];
@@ -16,128 +15,141 @@ export type Plan = {
 export const pricingPage = {
   meta: {
     title: "Pricing",
-    description: "Simple plans for founders, operators and agencies. Start free and grow without limits.",
+    description: "Indicative packaging for GeoKade Cloud and Enterprise. Contact us for a proposal matched to your organisation.",
   },
   hero: {
     eyebrow: "Pricing",
-    title: "Start simple,",
-    accent: "grow without limits",
-    description: "Build and scale without managing the systems behind it.",
+    title: "Start with Cloud,",
+    accent: "scale with control",
+    description: "Indicative packages for evaluation. Final commercial terms depend on scope, users, and deployment.",
   },
-  billing: { monthly: "Monthly", yearly: "Annual", yearlyNote: "save 20%", perMonth: "/ month" },
-  /** Shown in this order (featured plan in the middle, as in the design). */
+  billing: { monthly: "Monthly", yearly: "Annual", yearlyNote: "discuss", perMonth: "/ month" },
   plans: [
     {
-      name: "Founder",
-      monthly: 39,
-      yearly: 31,
-      description: "Getting the first company out the door.",
+      name: "Cloud",
+      monthly: 0,
+      yearly: 0,
+      description: "Explore Dutch open data and hosted workspaces.",
       features: [
-        "1 company workspace",
-        "Launch tasks: brand, domain, LLC",
-        "50 agent tasks / month",
-        "Approvals inbox",
+        "Access via geokade.nl",
+        "Dataset discovery",
+        "Interactive maps",
+        "Selected public-data capabilities",
         "Email support",
-        "Design system builder",
       ],
-      cta: { label: "Start free", href: "/contact" },
+      cta: { label: "Open platform", href: "https://geokade.nl" },
     },
     {
-      name: "Studio",
-      monthly: 249,
-      yearly: 199,
-      description: "Agencies and holding companies.",
+      name: "Teams",
+      monthly: 0,
+      yearly: 0,
+      description: "Collaboration for departments and project teams.",
       features: [
-        "Everything in Operator",
-        "Up to 25 client workspaces",
-        "Shared brand kits & templates",
-        "Roles, audit log, SSO",
-        "SEO analysis",
-        "ICP analysis",
-        "Multiple agents",
+        "Everything in Cloud",
+        "Shared workspaces",
+        "Map stories & sharing",
+        "Priority onboarding conversation",
+        "Named support channel",
       ],
       cta: { label: "Talk to us", href: "/contact" },
       featured: true,
-      badge: "Most Popular",
+      badge: "Most requested",
     },
     {
-      name: "Operator",
-      monthly: 99,
-      yearly: 79,
-      description: "Running the whole business on Vaxnori AI.",
+      name: "Enterprise",
+      monthly: 0,
+      yearly: 0,
+      description: "Private deployment, governance, and integration.",
       features: [
-        "Unlimited companies & tasks",
-        "Growth: research, outreach, campaigns",
-        "Recurring ops & weekly digests",
-        "Workflow builder",
-        "Priority support + onboarding call",
-        "SEO analysis",
-        "ICP analysis",
-        "Multiple Agents",
+        "Private / customer-managed options",
+        "IAM & role-based access",
+        "Enterprise data connectors",
+        "Data residency discussions",
+        "Solution architecture support",
       ],
-      cta: { label: "Start 14-day trial", href: "/contact" },
+      cta: { label: "Book a conversation", href: "/contact" },
     },
   ] satisfies Plan[],
   comparison: {
-    title: "What's in each plan",
-    columns: ["Feature", "Founder", "Operator", "Studio"],
-    /** Index of the highlighted column (0 = first plan column). */
+    title: "What's in each path",
+    columns: ["Capability", "Cloud", "Teams", "Enterprise"],
     highlight: 1,
     rows: [
-      ["Company workspaces", "1", "Unlimited", "25 client spaces"],
-      ["Agent tasks per month", "50", "Unlimited", "Unlimited"],
-      ["Launch pack (brand, domain, LLC)", "Included", "Included", "Included"],
-      ["Growth work (research, outreach)", "-", "Included", "Included"],
-      ["Recurring ops & weekly digest", "-", "Included", "Included"],
-      ["Workflow builder", "-", "Included", "Included"],
-      ["Approvals inbox", "Included", "Included", "Included"],
-      ["Integrations", "12", "All 40+", "All 40+ • Custom"],
-      ["Roles, audit log, SSO", "-", "-", "Included"],
-      ["Support", "Email", "Priority + Onboarding", "Named partner"],
+      ["Hosted platform (geokade.nl)", "Included", "Included", "Optional / hybrid"],
+      ["Dutch open-data discovery", "Included", "Included", "Included"],
+      ["Interactive mapping", "Included", "Included", "Included"],
+      ["Shared workspaces", "Limited", "Included", "Included"],
+      ["Map stories", "Basic", "Included", "Included"],
+      ["Private deployment", "-", "-", "Included"],
+      ["IAM / SSO discussions", "-", "-", "Included"],
+      ["Custom data connectors", "-", "On request", "Included"],
+      ["Support", "Email", "Named channel", "Architecture partner"],
     ] as [string, string, string, string][],
   },
   promises: [
-    { icon: "shield", title: "Approval-first by default", description: "Every task waits for your yes before it touches money, paperwork or the public internet." },
-    { icon: "sliders", title: "Bring your own tools", description: "Vaxnori AI signs in and works your stack instead of asking you to move into a new one." },
-    { icon: "users", title: "Human hand-off", description: "Anything an agent can't finish arrives back with notes, not a dead end." },
-    { icon: "shieldLock", title: "Own your work", description: "Files, domains and filings are registered to you from day one. Export any time." },
-  ] satisfies { icon: LineIconName; title: string; description: string }[],
+    {
+      icon: "shield" as LineIconName,
+      title: "Honest availability",
+      description: "We do not advertise unfinished features as production-ready. Roadmap stays labelled as roadmap.",
+    },
+    {
+      icon: "sliders" as LineIconName,
+      title: "Beside your GIS",
+      description: "GeoKade complements existing GIS and data platforms instead of forcing a rip-and-replace.",
+    },
+    {
+      icon: "users" as LineIconName,
+      title: "Built for organisations",
+      description:
+        "Municipalities, universities, research and civic organisations, infrastructure teams, and private enterprise — not consumer map toys.",
+    },
+    {
+      icon: "shieldLock" as LineIconName,
+      title: "Control when you need it",
+      description:
+        "Enterprise conversations — public or private sector — start from governance, identity, and data residency — not marketing slides.",
+    },
+  ],
   track: {
-    eyebrow: "Track",
-    title: "You always know exactly",
-    accent: "what you spent",
+    eyebrow: "Commercial note",
+    title: "Numbers above are",
+    accent: "indicative",
     description:
-      "Every task, approval, and integration call is metered in the open. Track every cost clearly as your business grows. No surprise overage invoice at the end of the month.",
+      "Displayed amounts may show as placeholders during evaluation. We finalise pricing with you based on users, data scope, and deployment. No surprise claims about certifications we do not hold.",
     image: {
       src: "/images/pricing/track.webp",
-      alt: "Spend this month: $93.00 of $300.00 used, with a list of recent tasks and their costs",
+      alt: "Illustration of transparent commercial tracking for platform usage",
     },
   },
   faq: {
     eyebrow: "FAQ",
-    title: "Your fair questions,",
-    accent: "our straight answers.",
-    cta: { label: "Try it for Free", href: "/contact" },
+    title: "Fair questions,",
+    accent: "straight answers.",
+    cta: { label: "Contact us", href: "/contact" },
     items: [
       {
-        question: "What counts as an agent task?",
+        question: "Why do some prices show as zero?",
         answer:
-          "One finished piece of work – for example a drafted email sequence, a registered domain or a filed form. Drafts you throw away and approvals do not count.",
+          "Cloud entry and custom Enterprise deals are confirmed with you directly. The page communicates packaging, not a self-serve checkout.",
       },
       {
-        question: "Do I pay for the domain, filings and ad spend?",
-        answer:
-          "Yes. Third-party costs like domains, state filing fees and ad budgets are passed through at cost and always shown before you approve them.",
+        question: "Can we start on Cloud and move to Enterprise later?",
+        answer: "Yes. Many organisations evaluate value on Cloud before discussing private deployment.",
       },
-      { question: "Can I switch plans later?", answer: "Any time. Upgrades apply right away; downgrades start at your next billing date." },
-      { question: "Is there a free tier?", answer: "The Founder plan starts free, so you can launch your first company before you pay anything." },
       {
-        question: "What happens to my work if I cancel?",
+        question: "Is AI usage billed separately?",
         answer:
-          "You keep everything. The brand, the domain, the company, the content – everything is registered in your name. Vaxnori AI holds nothing hostage.",
+          "Possible commercial models include usage-based AI and advanced analysis. Exact metering is confirmed in a proposal — we do not invent live meters here.",
       },
-      { question: "Do you offer annual invoicing?", answer: "Yes. Annual plans save 20% and can be paid by invoice." },
-      { question: "Is my data used to train models?", answer: "No. Your data is only used to do your work and is never used to train shared models." },
+      {
+        question: "Do you offer public-sector and campus procurement support?",
+        answer:
+          "Yes. We support evaluation conversations for municipalities, agencies, universities, and other organisations — and Enterprise discussions for private-sector buyers. Reach out via the contact form.",
+      },
+      {
+        question: "Where is the product?",
+        answer: "The live platform is at geokade.nl. This site (geokade.com) is the corporate and commercial front door.",
+      },
     ],
   },
 } as const;

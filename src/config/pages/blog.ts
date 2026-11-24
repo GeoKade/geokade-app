@@ -2,21 +2,20 @@
 export const blogPage = {
   meta: {
     title: "Blog",
-    description: "What we learn running companies on autopilot: approvals, launch playbooks, engineering and founder stories.",
+    description: "Notes on geospatial intelligence, Dutch open data, platform design, and building GeoKade.",
   },
   hero: {
     eyebrow: "Blog",
-    title: "What we learn",
-    accent: "running companies on autopilot.",
+    title: "Notes on geospatial",
+    accent: "intelligence.",
   },
   featuredCta: "Read the piece",
   list: {
-    eyebrow: "Product",
-    title: "From one sentence to a",
-    accent: "running company.",
+    eyebrow: "Insights",
+    title: "From data to",
+    accent: "decisions.",
     allLabel: "All",
-    /** Tabs shown above the list (posts are filtered by their `category`). */
-    categories: ["Approvals", "Launch playbooks", "Engineering", "Founder stories", "Changelog"],
+    categories: ["Product", "Open data", "Spatial AI", "Engineering", "Company", "Changelog"],
     readMore: "Read more",
     loadMore: "Load older posts",
     empty: "No posts in this category yet.",
