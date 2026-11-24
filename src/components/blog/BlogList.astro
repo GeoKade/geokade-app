@@ -59,65 +59,96 @@ const tabs = [labels.allLabel, ...labels.categories];
   </div>
 </div>
 
-<script data-astro-rerun>
+<script>
   import { animate, stagger } from "motion";
   import { EASE, reduceMotion } from "@/scripts/motion";
 
-  document.querySelectorAll<HTMLElement>("[data-blog-list]").forEach((root) => {
-    const pageSize = Number(root.dataset.pageSize);
-    const all = root.dataset.all!;
-    const tabs = [...root.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
-    const items = [...root.querySelectorAll<HTMLElement>("[data-post]")];
-    const empty = root.querySelector<HTMLElement>("[data-empty]")!;
-    const moreWrap = root.querySelector<HTMLElement>("[data-more-wrap]")!;
-    let active = 0;
-    let visible = pageSize;
+  function bindBlogLists() {
+    document.querySelectorAll<HTMLElement>("[data-blog-list]").forEach((root) => {
+      if (root.dataset.bound === "1") return;
+      root.dataset.bound = "1";
 
-    const render = (from = 0) => {
-      const category = tabs[active].dataset.category;
-      const matches = items.filter((li) => category === all || li.dataset.category === category);
-      items.forEach((li) => (li.hidden = true));
-      const shown = matches.slice(0, visible);
-      shown.forEach((li) => (li.hidden = false));
-      empty.hidden = shown.length > 0;
-      moreWrap.hidden = matches.length <= visible;
-      const entering = shown.slice(from);
-      if (!reduceMotion() && entering.length)
-        animate(entering, { opacity: [0.001, 1], y: [28, 0] }, { duration: 0.6, ease: EASE, delay: stagger(0.06) });
-    };
+      const pageSize = Number(root.dataset.pageSize);
+      const all = root.dataset.all!;
+      const tabs = [...root.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
+      const items = [...root.querySelectorAll<HTMLElement>("[data-post]")];
+      const empty = root.querySelector<HTMLElement>("[data-empty]");
+      const moreWrap = root.querySelector<HTMLElement>("[data-more-wrap]");
+      const moreBtn = root.querySelector<HTMLElement>("[data-more]");
+      const tablist = root.querySelector('[role="tablist"]');
+      if (!empty || !moreWrap || !moreBtn || !tablist || tabs.length === 0) return;
 
-    const select = (next: number, focus = false) => {
-      next = (next + tabs.length) % tabs.length;
-      if (focus) tabs[next].focus();
-      if (next === active) return;
-      const from = tabs[active].querySelector("[data-underline]")!.getBoundingClientRect();
-      tabs.forEach((t, i) => {
-        t.setAttribute("aria-selected", String(i === next));
-        t.tabIndex = i === next ? 0 : -1;
+      let active = 0;
+      let visible = pageSize;
+
+      const render = (from = 0) => {
+        const category = tabs[active].dataset.category;
+        const matches = items.filter((li) => category === all || li.dataset.category === category);
+        items.forEach((li) => {
+          li.hidden = true;
+        });
+        const shown = matches.slice(0, visible);
+        shown.forEach((li) => {
+          li.hidden = false;
+        });
+        empty.hidden = shown.length > 0;
+        moreWrap.hidden = matches.length <= visible;
+        const entering = shown.slice(from);
+        if (!reduceMotion() && entering.length) {
+          animate(entering, { opacity: [0.001, 1], y: [28, 0] }, { duration: 0.6, ease: EASE, delay: stagger(0.06) });
+        }
+      };
+
+      const select = (next: number, focus = false) => {
+        next = ((next % tabs.length) + tabs.length) % tabs.length;
+        if (focus) tabs[next].focus();
+        if (next === active) return;
+        const fromEl = tabs[active].querySelector<HTMLElement>("[data-underline]");
+        const from = fromEl?.getBoundingClientRect();
+        tabs.forEach((t, i) => {
+          t.setAttribute("aria-selected", String(i === next));
+          t.tabIndex = i === next ? 0 : -1;
+        });
+        active = next;
+        visible = pageSize;
+        if (!reduceMotion()) {
+          const line = tabs[next].querySelector<HTMLElement>("[data-underline]");
+          if (line && from) {
+            const to = line.getBoundingClientRect();
+            animate(
+              line,
+              {
+                x: [from.left - to.left, 0],
+                scaleX: [to.width > 0 && from.width > 0 ? from.width / to.width : 1, 1],
+              },
+              { type: "spring", stiffness: 400, damping: 34 },
+            );
+          }
+        }
+        render();
+      };
+
+      tabs.forEach((t, i) => t.addEventListener("click", () => select(i)));
+      tablist.addEventListener("keydown", (event) => {
+        const e = event as KeyboardEvent;
+        const keys: Record<string, number> = {
+          ArrowRight: active + 1,
+          ArrowLeft: active - 1,
+          Home: 0,
+          End: tabs.length - 1,
+        };
+        if (e.key in keys) {
+          e.preventDefault();
+          select(keys[e.key], true);
+        }
       });
-      active = next;
-      visible = pageSize;
-      if (!reduceMotion()) {
-        const line = tabs[next].querySelector<HTMLElement>("[data-underline]")!;
-        const to = line.getBoundingClientRect();
-        animate(line, { x: [from.left - to.left, 0], scaleX: [to.width > 0 && from.width > 0 ? from.width / to.width : 1, 1] }, { type: "spring", stiffness: 400, damping: 34 });
-      }
-      render();
-    };
+      moreBtn.addEventListener("click", () => {
+        const before = visible;
+        visible += pageSize;
+        render(before);
+      });
+    });
+  }
 
-    tabs.forEach((t, i) => t.addEventListener("click", () => select(i)));
-    root.querySelector('[role="tablist"]')!.addEventListener("keydown", (event) => {
-      const e = event as KeyboardEvent;
-      const keys: Record<string, number> = { ArrowRight: active + 1, ArrowLeft: active - 1, Home: 0, End: tabs.length - 1 };
-      if (e.key in keys) {
-        e.preventDefault();
-        select(keys[e.key], true);
-      }
-    });
-    root.querySelector("[data-more]")!.addEventListener("click", () => {
-      const before = visible;
-      visible += pageSize;
-      render(before);
-    });
-  });
+  document.addEventListener("astro:page-load", bindBlogLists);
 </script>

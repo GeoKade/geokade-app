@@ -27,16 +27,9 @@ function buildHowItWorks(locale: Locale) {
       primaryCta: { label: nl ? "Open platform" : "Open platform", href: site.platformUrl },
       secondaryCta: { label: nl ? "Bekijk prijzen" : "View pricing", href: p("pricing") },
     },
-    video: {
-      poster: "/images/how-it-works/video-poster.webp",
-      alt: nl
-        ? "GeoKade Cloud: datasets ontdekken, kaart bekijken, workspace delen"
-        : "GeoKade Cloud: discover datasets, inspect the map, share a workspace",
-      label: nl ? "Video afspelen" : "Play the video",
-      src: "",
-      emptyNote: nl
-        ? "Productvideo volgt binnenkort. Verken ondertussen het live platform op geokade.nl."
-        : "Product walkthrough coming soon. Meanwhile, explore the live platform at geokade.nl.",
+    heroImage: {
+      src: "/images/how-it-works/public-sector-conference.png",
+      alt: nl ? "GeoKade op Public Sector Conference" : "GeoKade at Public Sector Conference",
     },
     steps: {
       eyebrow: nl ? "Hoe het werkt" : "How it works",

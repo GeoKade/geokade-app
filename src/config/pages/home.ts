@@ -142,6 +142,9 @@ function buildHome(locale: Locale) {
             search: nl ? "Zoek datasets…" : "Search datasets…",
             layersLabel: nl ? "Lagen" : "Layers",
             mapLabel: nl ? "Kaartvoorbeeld" : "Map preview",
+            mapImage: "/images/home/map-3d-city.png",
+            mapAlt: nl ? "3D kaartvoorbeeld met gebouwen en actieve lagen" : "3D map preview with buildings and active layers",
+            mapCredit: "",
             datasets: [
               { name: "BAG — Pand", source: "PDOK", active: true },
               { name: nl ? "Bestuurlijke grenzen" : "Admin boundaries", source: "PDOK", active: true },

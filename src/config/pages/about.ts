@@ -75,7 +75,10 @@ function buildAbout(locale: Locale) {
             : "Corporate site geokade.com: Cloud, Enterprise, and Intelligence as clear propositions.",
         },
       ],
-      image: { src: "/images/about/story.webp", alt: nl ? "Kaart en data in een workspace" : "Map and data in a workspace" },
+      image: {
+        src: "/images/about/geo-conference-2026.png",
+        alt: nl ? "GeoKade op Geo Conference 2026" : "GeoKade at Geo Conference 2026",
+      },
       frame: "/images/patterns/tiles-orange.webp",
     },
     stats: {

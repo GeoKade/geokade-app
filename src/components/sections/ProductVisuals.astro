@@ -1,7 +1,9 @@
 ---
+import { Image } from "astro:assets";
 import Icon from "@/components/icons/Icon.astro";
 import LineIcon from "@/components/icons/LineIcon.astro";
 import type { HomePage } from "@/config/pages/home";
+import { getImage } from "@/lib/images";
 import { cn } from "@/lib/utils";
 
 interface Props {
@@ -56,26 +58,20 @@ const positions =
           <p class="text-[10px] font-semibold tracking-[0.06em] text-subtle uppercase">{v.mapLabel}</p>
           <span class="rounded-[3px] border border-line bg-canvas px-1.5 py-0.5 text-[9px] font-semibold text-muted">EPSG:28992</span>
         </div>
-        <div class="relative flex-1 overflow-hidden bg-dots">
-          <!-- Abstract NL-ish map shapes -->
-          <svg viewBox="0 0 320 220" class="absolute inset-0 size-full text-line-strong" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-            <g fill="none" stroke="currentColor" stroke-width="1" opacity="0.45">
-              <path d="M40 40h240v140H40z" stroke-dasharray="4 4" />
-              <path d="M40 75h240M40 110h240M40 145h240M100 40v140M160 40v140M220 40v140" opacity="0.5" />
-            </g>
-            <path d="M70 160c18-28 32-48 58-62 20-11 42-18 70-14 22 3 40 14 54 32" stroke="var(--brand)" stroke-width="2.5" fill="none" opacity="0.85" />
-            <path d="M88 168c14-20 28-38 50-50 24-14 48-18 74-10" stroke="var(--layer-2)" stroke-width="1.75" fill="none" opacity="0.7" />
-            <g fill="var(--brand)" opacity="0.9">
-              <circle cx="128" cy="98" r="3.5" />
-              <circle cx="168" cy="86" r="3.5" />
-              <circle cx="198" cy="108" r="3.5" />
-              <circle cx="148" cy="128" r="3.5" />
-            </g>
-            <path d="M118 150 155 95 205 140 170 165Z" fill="var(--brand)" fill-opacity="0.12" stroke="var(--brand)" stroke-width="1.25" />
-          </svg>
-          <div class="absolute right-2 bottom-2 flex gap-1">
+        <div class="relative flex-1 overflow-hidden bg-canvas">
+          <Image
+            src={getImage(v.mapImage)}
+            alt={v.mapAlt}
+            widths={[320, 480, 720, 1024]}
+            sizes="(min-width: 1024px) 360px, 55vw"
+            class="absolute inset-0 size-full object-cover object-center"
+          />
+          <div class="absolute right-2 bottom-2 flex flex-wrap justify-end gap-1">
             <span class="rounded-[3px] border border-line bg-surface/90 px-1.5 py-0.5 text-[9px] font-medium text-muted backdrop-blur-sm">BAG</span>
             <span class="rounded-[3px] border border-line bg-surface/90 px-1.5 py-0.5 text-[9px] font-medium text-muted backdrop-blur-sm">PDOK</span>
+            {v.mapCredit && (
+              <span class="rounded-[3px] border border-line bg-surface/90 px-1.5 py-0.5 text-[9px] font-medium text-muted backdrop-blur-sm">{v.mapCredit}</span>
+            )}
           </div>
         </div>
       </div>

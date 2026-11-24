@@ -1,26 +1,38 @@
 ---
+import { Image } from "astro:assets";
 import CtaBanner from "@/components/sections/CtaBanner.astro";
 import Faq from "@/components/sections/Faq.astro";
 import HowItWorks from "@/components/sections/HowItWorks.astro";
 import LogoStrip from "@/components/sections/LogoStrip.astro";
 import PageHero from "@/components/sections/PageHero.astro";
 import StepRows from "@/components/sections/StepRows.astro";
-import VideoBlock from "@/components/sections/VideoBlock.astro";
 import { getHomePage } from "@/config/pages/home";
 import { getHowItWorksPage } from "@/config/pages/how-it-works";
 import { resolveLocale } from "@/i18n";
 import BaseLayout from "@/layouts/BaseLayout.astro";
+import { getImage } from "@/lib/images";
 
 const locale = resolveLocale(Astro.currentLocale);
 const homePage = getHomePage(locale);
 const howItWorksPage = getHowItWorksPage(locale);
+const heroImage = howItWorksPage.heroImage;
 ---
 
 <BaseLayout {...howItWorksPage.meta}>
   <PageHero {...howItWorksPage.hero}>
-    <div id="video" class="scroll-mt-20 p-6 sm:p-8 lg:px-[50px] lg:pt-[50px] lg:pb-[60px]">
+    <div id="hero-image" class="scroll-mt-20 p-6 sm:p-8 lg:px-[50px] lg:pt-[50px] lg:pb-[60px]">
       <div data-reveal data-delay="0.5" data-y="0">
-        <VideoBlock video={howItWorksPage.video} />
+        <div class="relative aspect-[322/183] w-full overflow-hidden rounded-card border border-line sm:aspect-[1140/552]">
+          <Image
+            src={getImage(heroImage.src)}
+            alt={heroImage.alt}
+            widths={[402, 804, 1140, 1536, 2280]}
+            sizes="(min-width: 1280px) 1140px, 100vw"
+            class="absolute inset-0 size-full object-cover"
+            loading="eager"
+            fetchpriority="high"
+          />
+        </div>
       </div>
     </div>
   </PageHero>
