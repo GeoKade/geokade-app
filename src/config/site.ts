@@ -2,6 +2,7 @@
  * Site-wide settings (locale-aware).
  * Page text lives in src/config/pages/*.ts.
  */
+import { features } from "@/config/features";
 import { defaultLocale, localePath, type Locale } from "@/i18n";
 
 export type NavLink = {
@@ -80,7 +81,7 @@ function chrome(locale: Locale): SiteChrome {
         mobile: [
           { label: "Home", href: p("") },
           { label: "Hoe het werkt", href: p("how-it-works") },
-          { label: "Carrières", href: p("careers") },
+          ...(features.careers ? [{ label: "Carrières", href: p("careers") }] : []),
           { label: "Prijzen", href: p("pricing") },
           { label: "Blog", href: p("blog") },
           { label: "Contact", href: p("contact") },
@@ -99,7 +100,7 @@ function chrome(locale: Locale): SiteChrome {
             title: "Ontdekken",
             links: [
               { label: "Hoe het werkt", href: p("how-it-works") },
-              { label: "Carrières", href: p("careers") },
+              ...(features.careers ? [{ label: "Carrières", href: p("careers") }] : []),
               { label: "Prijzen", href: p("pricing") },
               { label: "Blog", href: p("blog") },
               { label: "FAQ", href: p("faq") },
@@ -152,7 +153,7 @@ function chrome(locale: Locale): SiteChrome {
       mobile: [
         { label: "Home", href: p("") },
         { label: "How it works", href: p("how-it-works") },
-        { label: "Careers", href: p("careers") },
+        ...(features.careers ? [{ label: "Careers", href: p("careers") }] : []),
         { label: "Pricing", href: p("pricing") },
         { label: "Blog", href: p("blog") },
         { label: "Contact", href: p("contact") },
@@ -171,7 +172,7 @@ function chrome(locale: Locale): SiteChrome {
           title: "Explore",
           links: [
             { label: "How it works", href: p("how-it-works") },
-            { label: "Careers", href: p("careers") },
+            ...(features.careers ? [{ label: "Careers", href: p("careers") }] : []),
             { label: "Pricing", href: p("pricing") },
             { label: "Blog", href: p("blog") },
             { label: "FAQ", href: p("faq") },
@@ -220,12 +221,9 @@ export function getSiteConfig(locale: Locale = defaultLocale) {
     brand: { mark: "/brand/mark.svg", markAlt: "/brand/mark-alt.svg" },
     /**
      * Temporary UI switches — keep components in the codebase; flip to `true` to show again.
-     * Newsletter + contact form are off until SMTP / a provider is connected.
+     * See `src/config/features.ts`.
      */
-    features: {
-      newsletter: false,
-      contactForm: false,
-    },
+    features,
     /** Google Tag Manager — set to `null` to disable. */
     gtmId: "GTM-PPFHTR26" as string | null,
     socials: [

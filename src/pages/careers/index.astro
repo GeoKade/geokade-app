@@ -6,9 +6,14 @@ import ValuesScroller from "@/components/careers/ValuesScroller.astro";
 import CtaBanner from "@/components/sections/CtaBanner.astro";
 import PageHero from "@/components/sections/PageHero.astro";
 import Container from "@/components/ui/Container.astro";
+import { features } from "@/config/features";
 import { careersPage } from "@/config/pages/careers";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { getJobs } from "@/lib/content";
+
+if (!features.careers) {
+  return Astro.redirect("/", 302);
+}
 
 const jobs = await getJobs();
 ---
