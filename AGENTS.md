@@ -1,6 +1,6 @@
 # AGENTS.md – notes for AI coding agents
 
-Vaxnori AI is a static Astro theme (marketing site for an AI/SaaS product). Read this before changing code.
+GeoKade is a static Astro marketing site (geospatial intelligence / SaaS). Read this before changing code.
 
 ## Stack
 
