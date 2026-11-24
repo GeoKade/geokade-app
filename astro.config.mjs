@@ -3,6 +3,7 @@ import { defineConfig } from "astro/config";
 import tailwindcss from "@tailwindcss/vite";
 import sitemap from "@astrojs/sitemap";
 import mdx from "@astrojs/mdx";
+import { features } from "./src/config/features.ts";
 
 /**
  * The public URL of your site. Used for canonical links, Open Graph and the sitemap.
@@ -37,6 +38,7 @@ export default defineConfig({
           nl: "nl-NL",
         },
       },
+      filter: (page) => features.careers || !page.includes("/careers"),
     }),
   ],
   vite: {

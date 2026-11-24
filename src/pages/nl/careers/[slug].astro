@@ -9,6 +9,7 @@ import JsonLd from "@/components/JsonLd.astro";
 import { mdxComponents } from "@/components/mdx";
 import Button from "@/components/ui/Button.astro";
 import Container from "@/components/ui/Container.astro";
+import { features } from "@/config/features";
 import { careersPage } from "@/config/pages/careers";
 import { getSiteConfig } from "@/config/site";
 import { resolveLocale } from "@/i18n";
@@ -17,6 +18,7 @@ import { formatDate, getJobs, type Job } from "@/lib/content";
 import { getImage } from "@/lib/images";
 
 export async function getStaticPaths() {
+  if (!features.careers) return [];
   const jobs = await getJobs();
   return jobs.map((job) => ({ params: { slug: job.id }, props: { job } }));
 }
