@@ -1,5 +1,6 @@
 ---
 import "@/styles/global.css";
+import Analytics from "@/components/Analytics.astro";
 import JsonLd from "@/components/JsonLd.astro";
 import Footer from "@/components/layout/Footer.astro";
 import Header from "@/components/layout/Header.astro";
@@ -22,6 +23,7 @@ interface Props {
 const locale = resolveLocale(Astro.currentLocale);
 const siteConfig = getSiteConfig(locale);
 const { title, description = siteConfig.description, type = "website", image, noindex = false } = Astro.props;
+const gtmId = siteConfig.gtmId;
 
 const fullTitle = pageTitle(title, locale);
 const canonical = absoluteUrl(Astro.url.pathname, locale);
@@ -122,9 +124,23 @@ const alternateLocales = locales.map((code: Locale) => ({
     <meta name="twitter:image" content={ogImage} />
 
     <JsonLd data={jsonLd} />
+    {gtmId && <Analytics gtmId={gtmId} />}
     <slot name="head" />
   </head>
   <body class="flex min-h-dvh flex-col bg-surface text-ink">
+    {
+      gtmId && (
+        <noscript>
+          <iframe
+            src={`https://www.googletagmanager.com/ns.html?id=${gtmId}`}
+            height="0"
+            width="0"
+            style="display:none;visibility:hidden"
+            title="Google Tag Manager"
+          />
+        </noscript>
+      )
+    }
     <a
       href="#main"
       class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[60] focus:rounded-button focus:bg-ink focus:px-4 focus:py-2.5 focus:text-sm focus:font-semibold focus:text-white"

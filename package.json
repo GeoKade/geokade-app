@@ -39,16 +39,9 @@
     "url": "https://github.com/GeoKade/geokade-app.git"
   },
   "keywords": [
+    "geokade",
+    "geospatial",
     "astro",
-    "astro-theme",
-    "template",
-    "tailwindcss",
-    "saas",
-    "landing-page",
-    "mdx",
-    "astro-template",
-    "startup",
-    "marketing",
-    "blog"
+    "marketing"
   ]
 }

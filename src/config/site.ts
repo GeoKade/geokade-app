@@ -226,6 +226,8 @@ export function getSiteConfig(locale: Locale = defaultLocale) {
       newsletter: false,
       contactForm: false,
     },
+    /** Google Tag Manager — set to `null` to disable. */
+    gtmId: "GTM-PPFHTR26" as string | null,
     socials: [
       { platform: "linkedin" as const, label: "LinkedIn", href: "https://www.linkedin.nl/company/geokade" },
       { platform: "x" as const, label: "X (Twitter)", href: "https://x.nl/geokade" },
