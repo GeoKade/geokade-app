@@ -70,8 +70,21 @@ const icon = "absolute size-7 transition-[opacity,rotate,scale] duration-300 eas
 
     let open = false;
     let saved = { overflow: "", paddingRight: "" };
-    const items = panel.querySelectorAll<HTMLElement>("[data-menu-item]");
-    const links = () => [toggle, ...panel.querySelectorAll<HTMLElement>("a")];
+    const home = toggle.parentElement;
+    const items = () => panel.querySelectorAll<HTMLElement>("[data-menu-item]");
+    const focusables = () => [toggle, ...panel.querySelectorAll<HTMLElement>("a")];
+
+    /**
+     * Header uses backdrop-blur, which makes `position: fixed` children size to the
+     * header box (~45px). Park the panel on <body> while open so it fills the viewport.
+     */
+    const mountPanel = (toBody: boolean) => {
+      if (toBody) {
+        if (panel.parentElement !== document.body) document.body.appendChild(panel);
+      } else if (home && panel.parentElement !== home) {
+        home.appendChild(panel);
+      }
+    };
 
     const onKey = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
@@ -79,9 +92,9 @@ const icon = "absolute size-7 transition-[opacity,rotate,scale] duration-300 eas
         toggle.focus();
       }
       if (event.key === "Tab") {
-        const focusable = links();
-        const first = focusable[0];
-        const last = focusable[focusable.length - 1];
+        const list = focusables();
+        const first = list[0];
+        const last = list[list.length - 1];
         if (event.shiftKey && document.activeElement === first) {
           event.preventDefault();
           last.focus();
@@ -102,6 +115,7 @@ const icon = "absolute size-7 transition-[opacity,rotate,scale] duration-300 eas
       if (open) {
         const header = toggle.closest("header");
         if (header) panel.style.top = `${Math.round(header.getBoundingClientRect().bottom)}px`;
+        mountPanel(true);
         const scrollbar = window.innerWidth - document.documentElement.clientWidth;
         saved = { overflow: document.body.style.overflow, paddingRight: document.body.style.paddingRight };
         document.body.style.overflow = "hidden";
@@ -110,17 +124,20 @@ const icon = "absolute size-7 transition-[opacity,rotate,scale] duration-300 eas
         document.addEventListener("keydown", onKey);
         if (!reduce) {
           animate(panel, { opacity: [0, 1], y: [-8, 0] }, { duration: 0.3, ease: EASE });
-          animate(items, { opacity: [0, 1], y: [12, 0] }, { duration: 0.5, ease: EASE, delay: stagger(0.05, { startDelay: 0.08 }) });
+          animate(items(), { opacity: [0, 1], y: [12, 0] }, { duration: 0.5, ease: EASE, delay: stagger(0.05, { startDelay: 0.08 }) });
         }
       } else {
         document.body.style.overflow = saved.overflow;
         document.body.style.paddingRight = saved.paddingRight;
         document.removeEventListener("keydown", onKey);
-        if (reduce) panel.hidden = true;
+        const hide = () => {
+          if (open) return;
+          panel.hidden = true;
+          mountPanel(false);
+        };
+        if (reduce) hide();
         else
-          animate(panel, { opacity: 0, y: -8 }, { duration: 0.3, ease: EASE }).then(() => {
-            if (!open) panel.hidden = true;
-          });
+          animate(panel, { opacity: 0, y: -8 }, { duration: 0.3, ease: EASE }).then(hide);
       }
     }
 
@@ -129,5 +146,13 @@ const icon = "absolute size-7 transition-[opacity,rotate,scale] duration-300 eas
     window.matchMedia("(min-width: 64rem)").addEventListener("change", (e) => e.matches && setOpen(false));
   }
 
+  bindMobileMenu();
   document.addEventListener("astro:page-load", bindMobileMenu);
+  document.addEventListener("astro:before-swap", () => {
+    document.querySelectorAll("[data-menu-panel]").forEach((el) => {
+      if (el.parentElement === document.body) el.remove();
+    });
+    document.body.style.overflow = "";
+    document.body.style.paddingRight = "";
+  });
 </script>
